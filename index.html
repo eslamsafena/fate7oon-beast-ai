@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101526">
+<title>فاتحون | مساعد دمج الحيوانات - أبو سليم</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101526;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:16px}
+header{padding:12px 0}
+h1{color:#ffd166;font-size:25px;margin:8px 0}
+.sub{color:#b9c4dc;font-size:14px;line-height:1.8}
+.panel{max-width:480px;margin:14px auto;background:#1a2238;border:1px solid #394563;border-radius:18px;padding:12px}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;background:#0b1020;padding:8px;border-radius:13px}
+.cell{aspect-ratio:1;border:2px solid #3a4562;border-radius:10px;background:#222c43;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(10px,2.9vw,14px);font-weight:bold;overflow:hidden;padding:2px;cursor:pointer;min-width:0}
+.cell .emoji{font-size:clamp(23px,7vw,36px);line-height:1.3}
+.cell small{font-size:10px;line-height:1.3}
+.empty{background:#151c2e;color:#7f8aa7}
+.l1{background:#286749}.l2{background:#168b88}.l3{background:#49a9c7;color:#071c2b}.l4{background:#244c9b}.l5{background:#7048a5}.l6{background:#43276f}.l7{background:#a66b18}.l8{background:#b95821}.l9{background:#a93667}.l10{background:#a72e35}
+button{border:0;border-radius:10px;padding:12px 10px;background:#33415f;color:#fff;font-size:15px;font-weight:bold;cursor:pointer}
+button:active{transform:scale(.97)}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+.controls button{font-size:19px}
+.controls .best{grid-column:1/4;background:#e6a62e;color:#201604}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.tools button{font-size:13px}
+.danger{background:#823b49}
+.note{font-size:12px;color:#bdc7dc;line-height:1.8;margin:10px 0}
+#status{color:#ffe09a;min-height:24px;font-size:13px;margin-top:10px}
+footer{color:#8793b0;font-size:12px;padding:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🐪 فاتحون | دمج الحيوانات</h1>
+  <div style="color:#ffd166;font-size:19px;font-weight:bold">👑 أبو سليم AI 👑</div>
+  <div class="sub">سجّل لوحة اللعبة، ونساعدك تختار اتجاه الحركة الأفضل.</div>
+</header>
+
+<div class="panel">
+  <div style="margin:4px 0 12px;font-weight:bold">اضغط على أي خانة لاختيار الحيوان</div>
+  <div class="board" id="board"></div>
+
+  <div class="controls">
+    <span></span>
+    <button onclick="move('up')">⬆️ فوق</button>
+    <span></span>
+    <button onclick="move('left')">⬅️ شمال</button>
+    <button onclick="move('down')">⬇️ تحت</button>
+    <button onclick="move('right')">➡️ يمين</button>
+    <button class="best" onclick="bestMove()">🤖 اقترح أفضل حركة</button>
+  </div>
+
+  <div class="tools">
+    <button onclick="deleteSelected()">🗑️ حذف الخانة المحددة</button>
+    <button class="danger" onclick="clearBoard()">🔄 مسح اللوحة بالكامل</button>
+  </div>
+  <div id="status">اختار الحيوانات الموجودة في لعبتك أولًا.</div>
+</div>
+
+<div class="panel">
+  <strong>📖 أسماء الحيوانات</strong>
+  <div class="note">
+    ١ 🐪 الجمل الأخضر · ٢ 🦅 النسر التركواز<br>
+    ٣ 🦎 السحلية السماوي · ٤ 🦁 الأسد الأزرق<br>
+    ٥ 🐻 الدب البنفسجي · ٦ 🐉 التنين البنفسجي<br>
+    ٧ 🐎 الحصان الذهبي · ٨ 🦎 السحلية البرتقالي<br>
+    ٩ 🐘 الفيل الوردي · ١٠ 🦖 الديناصور الأحمر
+  </div>
+  <div class="note">ملاحظة: جرّب الحركة داخل الموقع بعد تسجيل اللوحة، ثم طبّقها في اللعبة الحقيقية. ظهور الحيوانات الجديدة عشوائي، وقد تختلف دقة الاقتراح حسب قواعد الحدث.</div>
+</div>
+
+<footer>Fate7oon Beast AI · صنع بحب ❤️ بواسطة أبو سليم</footer>
+
+<script>
+const names = {
+  1:["🐪","الجمل الأخضر"],
+  2:["🦅","النسر التركواز"],
+  3:["🦎","السحلية السماوي"],
+  4:["🦁","الأسد الأزرق"],
+  5:["🐻","الدب البنفسجي"],
+  6:["🐉","التنين البنفسجي"],
+  7:["🐎","الحصان الذهبي"],
+  8:["🦎","السحلية البرتقالي"],
+  9:["🐘","الفيل الوردي"],
+  10:["🦖","الديناصور الأحمر"]
+};
+let board = Array(16).fill(0);
+let selected = -1;
+
+function render(){
+  const el = document.getElementById("board");
+  el.innerHTML = "";
+  board.forEach((v,i)=>{
+    const c = document.createElement("button");
+    c.className = "cell " + (v ? "l"+v : "empty");
+    if(v){
+      c.innerHTML = `<span class="emoji">${names[v][0]}</span><small>${names[v][1]}</small>`;
+    } else {
+      c.innerHTML = `<span style="font-size:22px">＋</span><small>فارغة</small>`;
+    }
+    if(i===selected)c.style.outline="3px solid #ffd166";
+    c.onclick=()=>choose(i);
+    el.appendChild(c);
+  });
+}
+function say(t){document.getElementById("status").textContent=t}
+function choose(i){
+  selected=i;
+  const current=board[i] ? names[board[i]][1] : "خانة فارغة";
+  const answer=prompt(
+    "الخانة "+(i+1)+" — "+current+
+    "\nاكتب مستوى الحيوان من 1 إلى 10، أو 0 لمسح الخانة:"
+  );
+  if(answer!==null){
+    const n=Number(answer);
+    if(Number.isInteger(n)&&n>=0&&n<=10){
+      board[i]=n;
+      say(n===0?"تم إفراغ الخانة.":"تم اختيار "+names[n][1]+".");
+    } else say("اكتب رقمًا من 0 إلى 10.");
+  }
+  render();
+}
+function deleteSelected(){
+  if(selected<0){say("اضغط على الخانة التي تريد حذفها أولًا.");return}
+  board[selected]=0;
+  say("تم حذف الحيوان من الخانة المحددة.");
+  render();
+}
+function clearBoard(){
+  if(confirm("هل تريد مسح الحيوانات من اللوحة بالكامل؟")){
+    board=Array(16).fill(0);selected=-1;
+    say("تم مسح اللوحة.");
+    render();
+  }
+}
+function lineIndices(dir){
+  const lines=[];
+  for(let k=0;k<4;k++){
+    const line=[];
+    for(let j=0;j<4;j++){
+      if(dir==="left")line.push(k*4+j);
+      if(dir==="right")line.push(k*4+(3-j));
+      if(dir==="up")line.push(j*4+k);
+      if(dir==="down")line.push((3-j)*4+k);
+    }
+    lines.push(line);
+  }
+  return lines;
+}
+function slide(src,dir){
+  const out=src.slice();
+  let merges=0;
+  for(const line of lineIndices(dir)){
+    const vals=line.map(i=>src[i]).filter(v=>v>0);
+    const result=[];
+    for(let j=0;j<vals.length;j++){
+      if(j+1<vals.length && vals[j]===vals[j+1] && vals[j]<10){
+        result.push(vals[j]+1);j++;merges++;
+      }else result.push(vals[j]);
+    }
+    while(result.length<4)result.push(0);
+    line.forEach((idx,j)=>out[idx]=result[j]);
+  }
+  return {board:out,merges,changed:out.some((v,i)=>v!==src[i])};
+}
+function spawn(b){
+  const empty=b.map((v,i)=>v===0?i:-1).filter(i=>i>=0);
+  if(!empty.length)return b;
+  const idx=empty[Math.floor(Math.random()*empty.length)];
+  b[idx]=Math.random()<0.85?1:2;
+  return b;
+}
+function move(dir){
+  const r=slide(board,dir);
+  if(!r.changed){say("الحركة دي مش هتغيّر اللوحة.");return}
+  board=spawn(r.board);
+  selected=-1;render();
+  say("تمت الحركة. الدمج: "+r.merges+". سجّل اللوحة الجديدة حسب اللي ظهر في اللعبة.");
+}
+function score(r){
+  if(!r.changed)return -1e6;
+  const empty=r.board.filter(v=>v===0).length;
+  return empty*10+r.merges*35+Math.max(...r.board)*0.2;
+}
+function bestMove(){
+  const dirs=["up","down","left","right"];
+  let best=null,bestScore=-Infinity;
+  for(const d of dirs){
+    const r=slide(board,d),s=score(r);
+    if(s>bestScore){bestScore=s;best=d}
+  }
+  if(bestScore===-1e6){say("مفيش حركة متاحة؛ اللوحة محتاجة مساحة.");return}
+  const labels={up:"فوق ⬆️",down:"تحت ⬇️",left:"شمال ⬅️",right:"يمين ➡️"};
+  say("الاقتراح المبدئي: "+labels[best]+". راجع النتيجة في اللعبة ثم حدّث اللوحة هنا.");
+  document.querySelectorAll(".controls button").forEach(b=>b.style.boxShadow="");
+}
+render();
+</script>
+</body>
+      </html>
+      
