@@ -3,656 +3,509 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#101827">
-<title>فاتحون | ذكاء دمج الحيوانات</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10131d">
+<title>أبو سليم والمداح</title>
 <style>
 :root {
-  --bg: #101827;
-  --panel: #1b2940;
-  --cell: #293951;
-  --green: #70efc3;
-  --purple: #8c82ff;
-  --gold: #ffd477;
-  --text: #f5f7ff;
-  --muted: #aab8ce;
+  --bg:#10131d; --panel:#1b2030; --cell:#252c3e;
+  --gold:#f6c96a; --text:#f6f3eb; --muted:#aab3c7;
+  --blue:#6bbcff; --red:#ff777d; --green:#69e0ad;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  padding: 15px 12px 30px;
-  min-height: 100vh;
-  color: var(--text);
-  background:
-    radial-gradient(ellipse at top right,#293957 0,transparent 48%),
-    var(--bg);
-  font-family: Tahoma,Arial,sans-serif;
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;color:var(--text);
+ background:radial-gradient(ellipse at top,#29304b 0,#10131d 60%);
+ font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+ padding:20px 12px 35px;
 }
-button { font: inherit; cursor: pointer; touch-action: manipulation; }
-.app { max-width: 520px; margin: auto; }
-header { text-align: center; padding: 10px 0 20px; }
-.logo {
-  width: 68px;
-  height: 68px;
-  margin: auto auto 10px;
-  display: grid;
-  place-items: center;
-  border-radius: 23px;
-  color: #102033;
-  background: linear-gradient(140deg,var(--green),var(--purple));
-  font-size: 34px;
-  box-shadow: 0 8px 25px #70efc322;
+main{max-width:560px;margin:auto}
+header{text-align:center;margin:6px 0 20px}
+.logo{
+ font-size:clamp(27px,7vw,39px);font-weight:1000;
+ color:var(--gold);text-shadow:0 0 24px #f6c96a44;
 }
-h1 { margin: 0; font-size: 29px; }
-.subtitle {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.8;
-  margin-top: 8px;
+.subtitle{color:var(--muted);font-size:13px;margin-top:6px}
+.panel{
+ background:#1b2030eF;border:1px solid #ffffff12;
+ border-radius:23px;padding:14px;margin-bottom:13px;
+ box-shadow:0 10px 30px #0003;
 }
-.panel {
-  background: #1b2940ed;
-  border: 1px solid #ffffff12;
-  border-radius: 22px;
-  padding: 14px;
-  margin-bottom: 13px;
-  box-shadow: 0 10px 28px #00000018;
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#ffffff08;border-radius:14px;padding:10px 4px;text-align:center}
+.stat small{display:block;color:var(--muted);font-size:11px}
+.stat strong{display:block;color:var(--gold);font-size:19px;margin-top:3px}
+.board{
+ direction:ltr;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:7px;background:#0b0e16;padding:8px;border-radius:19px;
+ width:100%;aspect-ratio:1;
 }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
-  gap: 7px;
+.cell{
+ min-width:0;min-height:0;position:relative;border:1px solid #ffffff0a;
+ border-radius:13px;background:var(--cell);padding:0;
+ display:flex;align-items:center;justify-content:center;
+ cursor:pointer;overflow:hidden;transition:background .12s,transform .12s;
 }
-.stat {
-  padding: 11px 3px;
-  border-radius: 14px;
-  background: #ffffff08;
-  text-align: center;
+.cell:active{transform:scale(.96)}
+.cell.empty{background:#ffffff06}
+.cell img{width:88%;height:88%;object-fit:contain;pointer-events:none}
+.cell .level{
+ position:absolute;bottom:3px;right:4px;font-size:10px;
+ color:#fff;background:#080a11c9;padding:1px 5px;border-radius:7px;
 }
-.stat small {
-  display: block;
-  font-size: 11px;
-  color: var(--muted);
+.cell.selected{outline:3px solid var(--gold);outline-offset:-3px}
+.cell.hint{outline:3px solid var(--green);outline-offset:-3px}
+.cell.merge{background:#4a674d}
+.section-title{font-size:14px;color:var(--muted);margin:0 0 10px}
+.arrows{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:235px;margin:0 auto}
+button{
+ font:inherit;cursor:pointer;touch-action:manipulation;
 }
-.stat strong {
-  display: block;
-  margin-top: 6px;
-  font-size: 17px;
-  color: var(--green);
+.arrow,.action,.animal-option,.minor{
+ border:1px solid #ffffff14;border-radius:15px;color:var(--text);
+ background:#ffffff0b;min-height:45px;
 }
-.section-title {
-  font-weight: bold;
-  font-size: 15px;
-  margin-bottom: 12px;
+.arrow{font-size:24px;color:var(--blue);font-weight:900}
+.arrow:active,.action:active,.minor:active{transform:scale(.97)}
+.up{grid-column:2}.left{grid-column:1}.down{grid-column:2}.right{grid-column:3}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.action{padding:11px 5px;font-size:13px;font-weight:750}
+.action.primary{background:#f6c96a1c;border-color:#f6c96a55;color:var(--gold)}
+.action.danger{color:var(--red)}
+.action.active{outline:2px solid var(--gold)}
+.status{
+ font-size:13px;line-height:1.8;color:#e1e6f0;
+ background:#0e121c;border-radius:13px;padding:12px;
+ min-height:48px;overflow-wrap:anywhere;
 }
-.board {
-  display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: 7px;
-  padding: 8px;
-  border-radius: 19px;
-  background: #101827;
-  direction: ltr;
-}
-.cell {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1;
-  min-width: 0;
-  border: 1px solid #ffffff0a;
-  border-radius: 13px;
-  padding: 2px;
-  background: var(--cell);
-  color: white;
-  transition: .12s;
-}
-.cell:active { transform: scale(.96); }
-.cell.empty {
-  background: #ffffff05;
-  border: 1px dashed #ffffff18;
-}
-.cell.selected {
-  border: 2px solid var(--green);
-  background: #2b4b55;
-  box-shadow: 0 0 12px #70efc328;
-}
-.animal {
-  font-size: clamp(25px,8vw,39px);
-  line-height: 1;
-  filter: grayscale(1) brightness(0);
-  user-select: none;
-}
-.level {
-  position: absolute;
-  bottom: 4px;
-  right: 5px;
-  color: #dce6f7;
-  font-size: 9px;
-  opacity: .8;
-}
-.plus { font-size: 24px; color: #71849e; }
-.hint {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.9;
-  margin: 11px 2px 0;
-}
-.controls {
-  display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
-  grid-template-areas:
-    ". up ."
-    "left down right";
-  gap: 8px;
-}
-.arrow {
-  height: 53px;
-  border: 1px solid #ffffff12;
-  border-radius: 16px;
-  color: white;
-  background: linear-gradient(145deg,#344761,#24334b);
-  font-size: 23px;
-  font-weight: bold;
-}
-.arrow:active { transform: scale(.96); }
-#up { grid-area: up; }
-#left { grid-area: left; }
-#down { grid-area: down; }
-#right { grid-area: right; }
-.actions {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 8px;
-}
-.btn {
-  min-height: 44px;
-  border: 0;
-  border-radius: 15px;
-  padding: 10px 7px;
-  color: white;
-  background: #2a3b54;
-  font-size: 13px;
-  font-weight: bold;
-}
-.btn:active { transform: scale(.97); }
-.btn.ai {
-  color: #fff;
-  background: linear-gradient(135deg,#7d76ff,#a078ff);
-}
-.btn.green {
-  color: #10251f;
-  background: linear-gradient(135deg,#8bf2cd,#53d6a9);
-}
-.btn.gold {
-  color: #30240c;
-  background: linear-gradient(135deg,#ffe49a,#ffbd54);
-}
-.btn.red {
-  background: #512b3c;
-  color: #ffc0cb;
-}
-.btn.wide { grid-column: 1 / -1; }
-.status {
-  background: #101827;
-  border: 1px solid #ffffff0d;
-  border-radius: 14px;
-  padding: 12px;
-  margin-top: 12px;
-  font-size: 13px;
-  line-height: 1.9;
-  color: var(--muted);
-}
-.status strong { color: var(--green); }
-.picker {
-  display: none;
-  grid-template-columns: repeat(5,minmax(0,1fr));
-  gap: 6px;
-  margin-top: 12px;
-}
-.picker.open { display: grid; }
-.pick {
-  min-width: 0;
-  border-radius: 12px;
-  padding: 8px 2px;
-  border: 1px solid #ffffff10;
-  background: #293951;
-  color: white;
-}
-.pick span {
-  display: block;
-  font-size: 25px;
-  filter: grayscale(1) brightness(0);
-}
-.pick small {
-  display: block;
-  font-size: 10px;
-  margin-top: 4px;
-  color: var(--muted);
-}
-footer {
-  text-align: center;
-  color: #8494ad;
-  font-size: 11px;
-  padding: 12px 0;
-}
-@media(max-width:360px) {
-  body { padding-inline: 8px; }
-  .panel { padding: 11px; }
-  .board { gap: 5px; padding: 6px; }
+.status b{color:var(--gold)}
+.picker{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.animal-option{padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.animal-option img{width:100%;height:55px;object-fit:contain}
+.animal-option span{font-size:11px}
+.animal-option small{font-size:10px;color:var(--muted)}
+.hidden{display:none!important}
+.footer{text-align:center;color:var(--muted);font-size:11px;margin:18px 0}
+@media(max-width:360px){
+ body{padding:12px 8px}.panel{padding:10px}
+ .board{gap:5px;padding:6px}.cell{border-radius:9px}
+ .actions{gap:6px}.action{font-size:12px}
 }
 </style>
 </head>
 <body>
-<div class="app">
+<main>
 <header>
-  <div class="logo">🐾</div>
-  <h1>فاتحون</h1>
-  <div class="subtitle">حلّل اللوحة واختَر أفضل حركة لدمج الحيوانات</div>
+ <div class="logo">👑 أبو سليم والمداح</div>
+ <div class="subtitle">مساعد دمج الحيوانات • تحليل الحركة • السيطرة على اللوحة</div>
 </header>
 
-<section class="panel">
-  <div class="stats">
-    <div class="stat"><small>النقاط</small><strong id="score">0</strong></div>
-    <div class="stat"><small>أعلى مستوى</small><strong id="highest">—</strong></div>
-    <div class="stat"><small>الخانات الفارغة</small><strong id="empty">16</strong></div>
-  </div>
+<section class="panel stats">
+ <div class="stat"><small>النقاط</small><strong id="score">0</strong></div>
+ <div class="stat"><small>أعلى مستوى</small><strong id="highest">—</strong></div>
+ <div class="stat"><small>الخانات الفاضية</small><strong id="empty">16</strong></div>
 </section>
 
 <section class="panel">
-  <div class="section-title">🐾 لوحة الحيوانات</div>
-  <div class="board" id="board"></div>
-  <p class="hint">
-    اضغط على خانة فارغة لإضافة الحيوان بنفسك.
-    بعد كل حركة لن يظهر أي حيوان جديد تلقائيًا.
-  </p>
+ <h2 class="section-title">🐾 لوحة الحيوانات 4 × 4</h2>
+ <div class="board" id="board" aria-label="لوحة اللعب"></div>
 </section>
 
 <section class="panel">
-  <div class="section-title">🧭 اتجاه الحركة</div>
-  <div class="controls">
-    <button class="arrow" id="up" onclick="move('up')">⬆️</button>
-    <button class="arrow" id="left" onclick="move('left')">⬅️</button>
-    <button class="arrow" id="down" onclick="move('down')">⬇️</button>
-    <button class="arrow" id="right" onclick="move('right')">➡️</button>
-  </div>
+ <h2 class="section-title">🎮 تحريك اللوحة</h2>
+ <div class="arrows">
+  <button class="arrow up" data-move="up" aria-label="أعلى">↑</button>
+  <button class="arrow left" data-move="left" aria-label="يسار">←</button>
+  <button class="arrow down" data-move="down" aria-label="أسفل">↓</button>
+  <button class="arrow right" data-move="right" aria-label="يمين">→</button>
+ </div>
 </section>
 
 <section class="panel">
-  <div class="section-title">🧠 أدوات التحليل والتحكم</div>
-  <div class="actions">
-    <button class="btn ai" onclick="suggestMove()">✨ أفضل حركة</button>
-    <button class="btn green" onclick="togglePicker()">➕ إضافة حيوان</button>
-    <button class="btn" onclick="undo()">↩️ تراجع</button>
-    <button class="btn red" onclick="removeSelected()">🗑️ حذف المحدد</button>
-    <button class="btn gold wide" onclick="clearBoard()">🧹 مسح اللوحة</button>
-  </div>
-  <div class="picker" id="picker"></div>
-  <div class="status" id="status">
-    <strong>أهلًا بيك!</strong> اختَر خانة فارغة وأضف أول حيوان.
-  </div>
-  <p class="hint">
-    تحليل أفضل حركة يعتمد على خوارزمية محلية تفحص الدمج والمساحات المتاحة؛
-    لا يتطلب اتصالًا بخدمة ذكاء اصطناعي خارجية.
-  </p>
+ <h2 class="section-title">🧠 أدوات المساعدة</h2>
+ <div class="actions">
+  <button class="action primary" id="best">🤖 أفضل حركة</button>
+  <button class="action" id="undo">↩️ تراجع</button>
+  <button class="action" id="add">🐾 إضافة حيوان</button>
+  <button class="action" id="swap">🔄 تبديل ذكي</button>
+  <button class="action" id="upgrade">⬆️ رفع ذكي</button>
+  <button class="action danger" id="delete">🗑️ اقتراح حذف</button>
+  <button class="action" id="clear">🧹 مسح اللوحة</button>
+  <button class="action" id="cancel">✖ إلغاء الاختيار</button>
+ </div>
 </section>
-<footer>FATE7OON • Animal Merge Assistant</footer>
-</div>
+
+<section class="panel hidden" id="pickerPanel">
+ <h2 class="section-title">اختر الحيوان والخانة الفارغة</h2>
+ <div class="picker" id="picker"></div>
+ <p class="subtitle">اختيار الحيوان لا يضيفه تلقائيًا؛ اضغط بعد ذلك على خانة فارغة.</p>
+</section>
+
+<section class="panel">
+ <h2 class="section-title">📊 نتيجة التحليل</h2>
+ <div class="status" id="status" aria-live="polite">
+  اضغط على خانة فارغة لإضافة حيوان، أو استخدم الأسهم لتحريك اللوحة.
+ </div>
+</section>
+
+<div class="footer">أبو سليم والمداح • نسخة مستقلة قيد التطوير</div>
+</main>
+
 <script>
+"use strict";
+
+const SIZE = 4;
+const MAX_LEVEL = 11;
+const SAVE_KEY = "abu_selim_al_maddah_v1";
 
 const ANIMALS = [
-  { name: "جمل", emoji: "🐪" },
-  { name: "نسر", emoji: "🦅" },
-  { name: "نمر", emoji: "🐅" },
-  { name: "أسد", emoji: "🦁" },
-  { name: "ذئب", emoji: "🐺" },
-  { name: "تنين", emoji: "🐉" },
-  { name: "حصان", emoji: "🐎" },
-  { name: "تمساح", emoji: "🐊" },
-  { name: "فيل", emoji: "🐘" },
-  { name: "ديناصور", emoji: "🦖" }
+ {name:"الجمل", file:"Camel.png"},
+ {name:"النسر", file:"Eagle.png"},
+ {name:"الفهد", file:"Panther.png"},
+ {name:"الأسد", file:"Lion.png"},
+ {name:"الذئب", file:"Wolf.png"},
+ {name:"فرس البحر", file:"Seahorse.png"},
+ {name:"الحصان", file:"Horse.png"},
+ {name:"الدب", file:"Bear.png"},
+ {name:"الفيل", file:"Elephant.png"},
+ {name:"الثور", file:"Bull.png"},
+ {name:"الروح", file:"Spirit.png"}
 ];
 
-const N = 4;
-const STORAGE_KEY = "fate7oon_beast_board_v5";
+const IMAGE_BASE =
+ "https://raw.githubusercontent.com/eng-misbah/misbah-games/main/";
+
 let board = Array(16).fill(0);
-let selected = -1;
 let score = 0;
 let history = [];
-let pickerOpen = false;
+let selectedAnimal = 0;
+let mode = "";
+let highlighted = [];
+let deleteSuggestion = -1;
 
 const $ = id => document.getElementById(id);
+const copyBoard = b => b.slice();
 
-function animalName(level) {
-  return ANIMALS[level - 1]?.name || "—";
+function animalName(level){
+ return level ? ANIMALS[level-1].name : "";
 }
-function animalEmoji(level) {
-  return ANIMALS[level - 1]?.emoji || "";
+function imageUrl(level){
+ return IMAGE_BASE + ANIMALS[level-1].file;
 }
-function say(title, message, warning = false) {
-  $("status").innerHTML =
-    `<strong>${escapeText(title)}</strong> ${escapeText(message)}`;
-  $("status").style.borderColor = warning ? "#ff718577" : "#ffffff0d";
+function emptyCount(b=board){
+ return b.filter(v=>v===0).length;
 }
-function escapeText(text) {
-  return String(text).replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;",
-    '"': "&quot;", "'": "&#39;"
-  })[c]);
+function highestLevel(b=board){
+ return Math.max(0,...b);
+}
+function save(){
+ try{
+  localStorage.setItem(SAVE_KEY,JSON.stringify({board,score}));
+ }catch(e){}
+}
+function load(){
+ try{
+  const d=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");
+  if(d && Array.isArray(d.board) && d.board.length===16 &&
+     d.board.every(v=>Number.isInteger(v)&&v>=0&&v<=MAX_LEVEL)){
+    board=d.board;
+    score=Number(d.score)||0;
+  }
+ }catch(e){}
 }
 
-function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({board, score}));
-  } catch (e) {}
+function say(message){
+ $("status").textContent=message;
 }
-function load() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (data && Array.isArray(data.board) && data.board.length === 16 &&
-        data.board.every(v => Number.isInteger(v) && v >= 0 && v <= ANIMALS.length)) {
-      board = data.board.slice();
-      score = Number.isFinite(data.score) ? data.score : 0;
+function render(){
+ const root=$("board");
+ root.innerHTML="";
+ board.forEach((level,i)=>{
+  const cell=document.createElement("button");
+  cell.type="button";
+  cell.className="cell"+(level===0?" empty":"")+
+    (highlighted.includes(i)?" hint":"");
+  cell.setAttribute("aria-label",level?animalName(level):"خانة فارغة");
+  if(level){
+   const img=document.createElement("img");
+   img.src=imageUrl(level);
+   img.alt=animalName(level);
+   img.onerror=()=>{img.style.display="none";};
+   cell.appendChild(img);
+   const badge=document.createElement("span");
+   badge.className="level";
+   badge.textContent=level;
+   cell.appendChild(badge);
+  }else{
+   cell.innerHTML='<span style="color:#647087;font-size:19px">+</span>';
+  }
+  cell.addEventListener("click",()=>cellClick(i));
+  root.appendChild(cell);
+ });
+ $("score").textContent=score.toLocaleString("en-US");
+ $("highest").textContent=highestLevel()?animalName(highestLevel()):"—";
+ $("empty").textContent=emptyCount();
+ save();
+}
+
+function snapshot(){
+ history.push({board:copyBoard(board),score});
+ if(history.length>100)history.shift();
+}
+function undo(){
+ if(!history.length){say("مفيش حركة سابقة نرجع لها.");return;}
+ const old=history.pop();
+ board=old.board;
+ score=old.score;
+ highlighted=[];
+ render();
+ say("تم التراجع عن آخر تعديل.");
+}
+
+function mergeLine(line){
+ const nums=line.filter(v=>v!==0);
+ const out=[];
+ let gained=0, merges=0;
+ for(let i=0;i<nums.length;i++){
+  if(i+1<nums.length && nums[i]===nums[i+1] && nums[i]<MAX_LEVEL){
+   const next=nums[i]+1;
+   out.push(next);
+   gained+=Math.pow(2,next);
+   merges++;
+   i++;
+  }else{
+   out.push(nums[i]);
+  }
+ }
+ while(out.length<SIZE)out.push(0);
+ return {line:out, gained, merges};
+}
+
+function shiftBoard(source,dir){
+ let b=copyBoard(source), gained=0, merges=0;
+ for(let n=0;n<SIZE;n++){
+  let indices=[];
+  for(let k=0;k<SIZE;k++){
+   if(dir==="left")indices.push(n*4+k);
+   if(dir==="right")indices.push(n*4+(3-k));
+   if(dir==="up")indices.push(k*4+n);
+   if(dir==="down")indices.push((3-k)*4+n);
+  }
+  const result=mergeLine(indices.map(i=>b[i]));
+  gained+=result.gained;
+  merges+=result.merges;
+  indices.forEach((idx,k)=>b[idx]=result.line[k]);
+ }
+ return {board:b,gained,merges};
+}
+function sameBoard(a,b){return a.every((v,i)=>v===b[i]);}
+
+function evaluate(b){
+ let value=emptyCount(b)*270;
+ value+=highestLevel(b)*22;
+ for(let r=0;r<4;r++){
+  for(let c=0;c<4;c++){
+   const v=b[r*4+c];
+   if(!v)continue;
+   value+=v*v*1.4;
+   for(const [dr,dc] of [[1,0],[0,1]]){
+    const rr=r+dr,cc=c+dc;
+    if(rr<4&&cc<4){
+     const n=b[rr*4+cc];
+     if(n===v && v<MAX_LEVEL)value+=190;
+     else if(n && Math.abs(n-v)===1)value+=17;
     }
-  } catch (e) {}
+   }
+  }
+ }
+ return value;
+}
+function bestMove(source=board){
+ let best=null;
+ for(const dir of ["left","right","up","down"]){
+  const res=shiftBoard(source,dir);
+  if(sameBoard(source,res.board))continue;
+  let value=evaluate(res.board)+res.gained*0.6+res.merges*100;
+  for(const dir2 of ["left","right","up","down"]){
+   const next=shiftBoard(res.board,dir2);
+   if(!sameBoard(res.board,next.board)){
+    value+=Math.max(0,evaluate(next.board)-evaluate(res.board))*0.18;
+   }
+  }
+  if(!best||value>best.value)best={dir,...res,value};
+ }
+ return best;
+}
+function directionName(d){
+ return {left:"الشمال",right:"اليمين",up:"فوق",down:"تحت"}[d];
+}
+function move(dir){
+ const result=shiftBoard(board,dir);
+ if(sameBoard(board,result.board)){
+  say("الحركة ناحية "+directionName(dir)+" مش هتغيّر اللوحة.");
+  return;
+ }
+ snapshot();
+ board=result.board;
+ score+=result.gained;
+ highlighted=[];
+ render();
+ say("اتحركت ناحية "+directionName(dir)+
+  ". عدد عمليات الدمج: "+result.merges+
+  " • النقاط المكتسبة: "+result.gained+".");
 }
 
-function render() {
-  const boardEl = $("board");
-  boardEl.innerHTML = "";
-  let empty = 0, highest = 0;
-
-  board.forEach((level, index) => {
-    const cell = document.createElement("button");
-    cell.type = "button";
-    cell.className = "cell" + (level === 0 ? " empty" : "");
-    if (index === selected) cell.classList.add("selected");
-    cell.setAttribute("aria-label", level
-      ? `${animalName(level)}، مستوى ${level}`
-      : `خانة فارغة ${index + 1}`);
-
-    if (level) {
-      const animal = document.createElement("span");
-      animal.className = "animal";
-      animal.textContent = animalEmoji(level);
-      cell.appendChild(animal);
-
-      const tag = document.createElement("span");
-      tag.className = "level";
-      tag.textContent = level;
-      cell.appendChild(tag);
-      highest = Math.max(highest, level);
-    } else {
-      empty++;
-      const plus = document.createElement("span");
-      plus.className = "plus";
-      plus.textContent = "+";
-      cell.appendChild(plus);
-    }
-
-    cell.addEventListener("click", () => {
-      selected = index;
-      render();
-
-      if (board[index] === 0) {
-        pickerOpen = true;
-        renderPicker();
-        say("خانة محددة:", "اختَر الحيوان الذي تريد إضافته هنا.");
-      } else {
-        say("تم تحديد الحيوان:", animalName(board[index]) +
-          ". يمكنك حذفه أو تحريك اللوحة.");
-      }
-    });
-    boardEl.appendChild(cell);
+function showPicker(){
+ const p=$("picker");
+ p.innerHTML="";
+ ANIMALS.forEach((a,i)=>{
+  const btn=document.createElement("button");
+  btn.type="button";btn.className="animal-option";
+  const img=document.createElement("img");
+  img.src=IMAGE_BASE+a.file;img.alt=a.name;
+  img.onerror=()=>img.style.display="none";
+  const name=document.createElement("span");
+  name.textContent=a.name;
+  const level=document.createElement("small");
+  level.textContent="المستوى "+(i+1);
+  btn.append(img,name,level);
+  btn.addEventListener("click",()=>{
+   selectedAnimal=i+1;
+   $("pickerPanel").classList.add("hidden");
+   mode="add";
+   say("اخترت "+a.name+". اضغط على أي خانة فارغة لوضعه فيها.");
+   updateButtons();
+   render();
   });
-
-  $("score").textContent = score;
-  $("empty").textContent = empty;
-  $("highest").textContent = highest ? animalName(highest) : "—";
-  renderPicker();
-  save();
+  p.appendChild(btn);
+ });
 }
-
-function renderPicker() {
-  const picker = $("picker");
-  picker.innerHTML = "";
-  picker.classList.toggle("open", pickerOpen);
-
-  ANIMALS.forEach((animal, i) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "pick";
-    button.innerHTML =
-      `<span>${animal.emoji}</span><small>${i + 1}. ${animal.name}</small>`;
-    button.addEventListener("click", () => addAnimal(i + 1));
-    picker.appendChild(button);
-  });
+function updateButtons(){
+ $("swap").classList.toggle("active",mode==="swap");
+ $("add").classList.toggle("active",mode==="add");
+ $("upgrade").classList.toggle("active",mode==="upgrade");
+ $("delete").classList.toggle("active",mode==="delete");
 }
-
-function togglePicker() {
-  pickerOpen = !pickerOpen;
-  renderPicker();
-  if (pickerOpen) {
-    say("إضافة حيوان:", selected >= 0 && board[selected] === 0
-      ? "اختَر الحيوان من القائمة."
-      : "اضغط على خانة فارغة أولًا.");
+function cancelMode(){
+ mode="";selectedAnimal=0;highlighted=[];
+ $("pickerPanel").classList.add("hidden");
+ updateButtons();render();
+ say("تم إلغاء الاختيار.");
+}
+function cellClick(i){
+ if(mode==="add"){
+  if(board[i]!==0){say("اختار خانة فاضية لإضافة الحيوان.");return;}
+  snapshot();board[i]=selectedAnimal;
+  mode="";selectedAnimal=0;highlighted=[];
+  updateButtons();render();
+  say("تمت إضافة الحيوان يدويًا. مفيش حيوان جديد هيظهر تلقائيًا.");
+  return;
+ }
+ if(mode==="swap"){
+  if(board[i]===0){say("اختار خانة فيها حيوان.");return;}
+  if(!highlighted.length){
+   highlighted=[i];render();say("اختار الحيوان التاني اللي عايز تبدله.");
+  }else{
+   const j=highlighted[0];
+   if(i===j){highlighted=[];render();return;}
+   snapshot();
+   [board[i],board[j]]=[board[j],board[i]];
+   mode="";highlighted=[];updateButtons();render();
+   say("تم تبديل الحيوانين المختارين.");
   }
+  return;
+ }
+ if(mode==="upgrade"){
+  if(!board[i]){say("اختار خانة فيها حيوان.");return;}
+  if(board[i]>=MAX_LEVEL){say("الحيوان ده وصل لأعلى مستوى.");return;}
+  snapshot();board[i]++;
+  mode="";highlighted=[];updateButtons();render();
+  say("تم رفع "+animalName(board[i])+" للمستوى التالي. دي أداة تعديل للوحة، مش حركة من قواعد اللعب.");
+  return;
+ }
+ if(mode==="delete"){
+  if(!board[i]){say("الخانة دي فاضية.");return;}
+  if(!confirm("متأكد إنك عايز تحذف "+animalName(board[i])+"؟"))return;
+  snapshot();const name=animalName(board[i]);board[i]=0;
+  mode="";highlighted=[];updateButtons();render();
+  say("تم حذف "+name+".");
+  return;
+ }
+ if(board[i]){
+  highlighted=[i];render();
+  say("الحيوان: "+animalName(board[i])+" • المستوى "+board[i]+".");
+ }else{
+  $("pickerPanel").classList.remove("hidden");
+  say("اختار الحيوان من القائمة، وبعدها اضغط على الخانة الفارغة.");
+ }
 }
 
-function checkpoint() {
-  history.push({board: board.slice(), score, selected});
-  if (history.length > 50) history.shift();
-}
-
-function addAnimal(level) {
-  if (selected < 0 || board[selected] !== 0) {
-    selected = board.findIndex(v => v === 0);
+$("best").addEventListener("click",()=>{
+ const res=bestMove();
+ if(!res){say("مفيش حركة تغيّر اللوحة حاليًا.");return;}
+ say("أفضل حركة حسب التحليل المحلي: "+directionName(res.dir)+
+  ". الدمج المتوقع: "+res.merges+
+  " • النقاط المتوقعة: "+res.gained+
+  ". التوصية تقديرية وليست ضمانًا لأفضل نتيجة مستقبلية.");
+ highlighted=[];
+});
+$("undo").addEventListener("click",undo);
+$("add").addEventListener("click",()=>{
+ mode="";highlighted=[];showPicker();
+ $("pickerPanel").classList.remove("hidden");
+ say("اختار الحيوان اللي عايز تضيفه بنفسك.");
+});
+$("swap").addEventListener("click",()=>{
+ $("pickerPanel").classList.add("hidden");
+ mode="swap";highlighted=[];updateButtons();render();
+ say("التبديل الذكي هنا أداة يدوية: اختار خانتين لتبديل الحيوانين بينهما.");
+});
+$("upgrade").addEventListener("click",()=>{
+ $("pickerPanel").classList.add("hidden");
+ mode="upgrade";highlighted=[];updateButtons();render();
+ say("اختار الحيوان اللي عايز ترفعه مستوى واحد. ده تعديل يدوي للوحة.");
+});
+$("delete").addEventListener("click",()=>{
+ if(!board.some(Boolean)){say("اللوحة فاضية.");return;}
+ let worst=-1, worstValue=Infinity;
+ board.forEach((v,i)=>{
+  if(!v)return;
+  let nearby=0;
+  const r=Math.floor(i/4),c=i%4;
+  for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){
+   const rr=r+dr,cc=c+dc;
+   if(rr>=0&&rr<4&&cc>=0&&cc<4&&board[rr*4+cc]===v)nearby++;
   }
-  if (selected < 0) {
-    say("اللوحة ممتلئة:", "ادمج الحيوانات أو احذف واحدًا أولًا.", true);
-    return;
-  }
+  const value=v*20+nearby*100+(i===0||i===15?5:0);
+  if(value<worstValue){worstValue=value;worst=i;}
+ });
+ deleteSuggestion=worst;
+ mode="delete";highlighted=[worst];updateButtons();render();
+ say("اقتراح الحذف التقديري: "+animalName(board[worst])+
+  " في الصف "+(Math.floor(worst/4)+1)+" والعمود "+(worst%4+1)+
+  ". اضغط على الحيوان المحدد للتأكيد قبل الحذف.");
+});
+$("clear").addEventListener("click",()=>{
+ if(!confirm("تمسح اللوحة كلها؟"))return;
+ snapshot();board=Array(16).fill(0);score=0;
+ highlighted=[];mode="";selectedAnimal=0;
+ updateButtons();render();say("تم مسح اللوحة.");
+});
+$("cancel").addEventListener("click",cancelMode);
 
-  checkpoint();
-  board[selected] = level;
-  pickerOpen = false;
-  say("تمت الإضافة:", animalName(level) + ". لن يظهر حيوان آخر تلقائيًا.");
-  render();
-}
-
-function getLines(direction) {
-  const lines = [];
-
-  for (let r = 0; r < N; r++) {
-    const line = [];
-    for (let c = 0; c < N; c++) {
-      if (direction === "left") line.push(r * N + c);
-      if (direction === "right") line.push(r * N + (N - 1 - c));
-      if (direction === "up") line.push(c * N + r);
-      if (direction === "down") line.push((N - 1 - c) * N + r);
-    }
-    lines.push(line);
-  }
-  return lines;
-}
-
-function simulate(source, direction) {
-  const result = source.slice();
-  let merges = 0, gained = 0;
-
-  for (const line of getLines(direction)) {
-    const values = line.map(i => source[i]).filter(v => v !== 0);
-    const packed = [];
-
-    for (let j = 0; j < values.length; j++) {
-      if (j + 1 < values.length && values[j] === values[j + 1]) {
-        const next = values[j] + 1;
-        packed.push(Math.min(next, ANIMALS.length));
-        gained += next;
-        merges++;
-        j++;
-      } else {
-        packed.push(values[j]);
-      }
-    }
-
-    while (packed.length < N) packed.push(0);
-    line.forEach((index, j) => result[index] = packed[j]);
-  }
-
-  return {
-    board: result,
-    merges,
-    gained,
-    changed: result.some((v, i) => v !== source[i])
-  };
-}
-
-function move(direction) {
-  const outcome = simulate(board, direction);
-
-  if (!outcome.changed) {
-    say("الحركة غير متاحة:", "جرّب اتجاهًا آخر.", true);
-    return;
-  }
-
-  checkpoint();
-  board = outcome.board;
-  score += outcome.gained;
-  selected = -1;
-  pickerOpen = false;
-  render();
-
-  const names = {
-    up: "فوق ⬆️",
-    left: "شمال ⬅️",
-    down: "تحت ⬇️",
-    right: "يمين ➡️"
-  };
-
-  say("تم تنفيذ الحركة:", names[direction] +
-    `؛ عدد عمليات الدمج: ${outcome.merges}.` +
-    " أضف الحيوان التالي بنفسك.");
-}
-
-function evaluate(b) {
-  let empty = 0, pairs = 0, smooth = 0, highest = 0;
-
-  for (let i = 0; i < 16; i++) {
-    const v = b[i];
-    if (!v) {
-      empty++;
-      continue;
-    }
-    highest = Math.max(highest, v);
-    const r = Math.floor(i / 4), c = i % 4;
-
-    if (c < 3 && v === b[i + 1]) pairs++;
-    if (r < 3 && v === b[i + 4]) pairs++;
-
-    if (c < 3 && b[i + 1]) smooth -= Math.abs(v - b[i + 1]);
-    if (r < 3 && b[i + 4]) smooth -= Math.abs(v - b[i + 4]);
-  }
-
-  const corner = [0, 3, 12, 15].some(i => b[i] === highest && highest > 0);
-  return empty * 12 + pairs * 10 + smooth * 0.5 +
-    highest * 2 + (corner ? highest * 2 : 0);
-}
-
-function suggestMove() {
-  const directions = ["up", "left", "down", "right"];
-  const names = {
-    up: "فوق ⬆️",
-    left: "شمال ⬅️",
-    down: "تحت ⬇️",
-    right: "يمين ➡️"
-  };
-
-  let choices = [];
-
-  for (const direction of directions) {
-    const result = simulate(board, direction);
-    if (!result.changed) continue;
-
-    const value = evaluate(result.board) +
-      result.merges * 15 + result.gained * 2;
-
-    choices.push({direction, value, merges: result.merges});
-  }
-
-  if (!choices.length) {
-    say("مفيش حركة متاحة:", "أضف حيوانًا أو غيّر وضع اللوحة.", true);
-    return;
-  }
-
-  choices.sort((a, b) => b.value - a.value);
-  const best = choices[0];
-
-  say("أفضل اقتراح:", names[best.direction] +
-    (best.merges
-      ? `؛ يتوقع ${best.merges} عملية دمج مباشرة.`
-      : "؛ قد يساعد على ترتيب الحيوانات وفتح مساحة.") +
-    " اضغط زر الاتجاه لتنفيذ الحركة بنفسك.");
-}
-
-function undo() {
-  if (!history.length) {
-    say("لا توجد حركة سابقة:", "نفّذ حركة أو أضف حيوانًا أولًا.", true);
-    return;
-  }
-
-  const previous = history.pop();
-  board = previous.board;
-  score = previous.score;
-  selected = previous.selected;
-  pickerOpen = false;
-  render();
-  say("تم التراجع:", "رجعنا للحالة السابقة.");
-}
-
-function removeSelected() {
-  if (selected < 0 || board[selected] === 0) {
-    say("مفيش حيوان محدد:", "اختَر حيوانًا من اللوحة أولًا.", true);
-    return;
-  }
-
-  checkpoint();
-  const name = animalName(board[selected]);
-  board[selected] = 0;
-  selected = -1;
-  render();
-  say("تم الحذف:", name);
-}
-
-function clearBoard() {
-  if (!confirm("متأكد إنك عايز تمسح كل الحيوانات؟")) return;
-  checkpoint();
-  board = Array(16).fill(0);
-  selected = -1;
-  score = 0;
-  pickerOpen = false;
-  render();
-  say("اللوحة أصبحت فارغة:", "أضف الحيوانات يدويًا.");
-}
-
-document.addEventListener("keydown", event => {
-  const keys = {
-    ArrowUp: "up",
-    ArrowLeft: "left",
-    ArrowDown: "down",
-    ArrowRight: "right"
-  };
-  if (keys[event.key]) {
-    event.preventDefault();
-    move(keys[event.key]);
-  }
+document.querySelectorAll("[data-move]").forEach(btn=>{
+ btn.addEventListener("click",()=>move(btn.dataset.move));
+});
+document.addEventListener("keydown",e=>{
+ const keys={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"};
+ if(keys[e.key]&&!["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){
+  e.preventDefault();move(keys[e.key]);
+ }
 });
 
 load();
+showPicker();
 render();
 </script>
 </body>
 </html>
- 
