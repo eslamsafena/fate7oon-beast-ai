@@ -1,204 +1,174 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101526">
-<title>فاتحون | مساعد دمج الحيوانات - أبو سليم</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#10152f">
+<title>دمج الحيوانات | الفاتحون</title>
 <style>
+:root{--bg:#10152f;--panel:#202b50;--gold:#ffd77a;--mint:#7dffe0;--pink:#ff8cce;--blue:#76cfff;--ink:#f8f6ff}
 *{box-sizing:border-box}
-body{margin:0;background:#101526;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:16px}
-header{padding:12px 0}
-h1{color:#ffd166;font-size:25px;margin:8px 0}
-.sub{color:#b9c4dc;font-size:14px;line-height:1.8}
-.panel{max-width:480px;margin:14px auto;background:#1a2238;border:1px solid #394563;border-radius:18px;padding:12px}
-.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;background:#0b1020;padding:8px;border-radius:13px}
-.cell{aspect-ratio:1;border:2px solid #3a4562;border-radius:10px;background:#222c43;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(10px,2.9vw,14px);font-weight:bold;overflow:hidden;padding:2px;cursor:pointer;min-width:0}
-.cell .emoji{font-size:clamp(23px,7vw,36px);line-height:1.3}
-.cell small{font-size:10px;line-height:1.3}
-.empty{background:#151c2e;color:#7f8aa7}
-.l1{background:#286749}.l2{background:#168b88}.l3{background:#49a9c7;color:#071c2b}.l4{background:#244c9b}.l5{background:#7048a5}.l6{background:#43276f}.l7{background:#a66b18}.l8{background:#b95821}.l9{background:#a93667}.l10{background:#a72e35}
-button{border:0;border-radius:10px;padding:12px 10px;background:#33415f;color:#fff;font-size:15px;font-weight:bold;cursor:pointer}
-button:active{transform:scale(.97)}
-.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
-.controls button{font-size:19px}
-.controls .best{grid-column:1/4;background:#e6a62e;color:#201604}
-.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.tools button{font-size:13px}
-.danger{background:#823b49}
-.note{font-size:12px;color:#bdc7dc;line-height:1.8;margin:10px 0}
-#status{color:#ffe09a;min-height:24px;font-size:13px;margin-top:10px}
-footer{color:#8793b0;font-size:12px;padding:12px}
+body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:radial-gradient(ellipse at 50% 0%,#45418b 0,#20274d 36%,#0e142b 78%);min-height:100vh;padding:14px 12px 28px}
+button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}
+.app{max-width:780px;margin:auto}
+.hero{position:relative;overflow:hidden;text-align:center;padding:18px 14px 20px;border-radius:38px;background:linear-gradient(135deg,#6141a9,#286c9a 52%,#8c438e);border:2px solid #ffe0a3;box-shadow:0 8px 0 #171c40,0 0 28px #8a7cff70,inset 0 2px 9px #fff8;margin-bottom:14px}
+.hero:before,.hero:after{content:"✦";position:absolute;color:#ffe8a4;font-size:30px;text-shadow:0 0 16px #fff;top:12px}.hero:before{right:22px}.hero:after{left:22px}
+.kicker{font-size:12px;letter-spacing:2px;color:#d9faff;font-weight:800}
+h1{font-size:clamp(25px,6vw,39px);margin:4px 0;color:#fff2c8;text-shadow:0 3px 0 #6a3e8b,0 0 16px #ffe1a6}
+.subtitle{font-size:13px;color:#f2eaff}
+.stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.pill{padding:8px 15px;border-radius:999px;background:linear-gradient(145deg,#ffffff30,#17264f99);border:1px solid #ffffff75;box-shadow:inset 0 2px 4px #fff4,0 4px 12px #1118;font-size:13px}
+.layout{display:grid;grid-template-columns:1fr;gap:13px}
+.panel{background:linear-gradient(145deg,#2b3864eF,#182344f5);border:1px solid #a4bfff66;border-radius:32px;padding:14px;box-shadow:0 7px 0 #0a1028, inset 0 1px 5px #fff2}
+.panel h2{font-size:17px;margin:0 0 10px;color:#ffe4a0}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:10px;border-radius:30px;background:linear-gradient(145deg,#121b3a,#35416c);border:2px solid #b8a8ff;box-shadow:inset 0 4px 12px #0008,0 0 20px #8c8bff30}
+.cell{position:relative;aspect-ratio:1;border-radius:23px;min-width:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;background:radial-gradient(circle at 35% 20%,#50628a,#253153 70%);border:1px solid #ffffff25;box-shadow:inset 0 2px 5px #fff2,0 3px 0 #101833;overflow:hidden;padding:3px;transition:transform .15s,filter .15s}
+.cell.empty{background:radial-gradient(circle at 35% 25%,#35496c,#192541 75%);border:1px dashed #8db5dc77}
+.cell.empty:after{content:"+";font-size:27px;color:#a5c4e9a8;font-weight:300}
+.cell.selected{outline:3px solid #fff3a4;box-shadow:0 0 17px #ffe987,inset 0 2px 8px #fff8}
+.cell .animal{font-size:clamp(24px,7vw,42px);line-height:1;color:var(--tile,#d6efff);filter:drop-shadow(0 0 7px var(--tile,#d6efff)) drop-shadow(0 2px 0 #080d24);opacity:.88}
+.cell .lvl{font-size:10px;font-weight:800;color:#fff;text-shadow:0 1px 4px #000;background:#101a3acc;padding:2px 7px;border-radius:999px}
+.cell .remove-mini{position:absolute;top:2px;left:2px;border-radius:50%;width:19px;height:19px;background:#ff5176;color:white;font-size:12px;display:none;line-height:1}
+.cell.selected .remove-mini{display:block}
+.hint{color:#b9c9ef;font-size:12px;text-align:center;margin:9px 2px 0;line-height:1.7}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:340px;margin:12px auto 0}
+.control{min-height:51px;border-radius:999px;background:linear-gradient(145deg,#56d6ff,#3e64db 55%,#794be0);border:2px solid #c4edff;box-shadow:0 5px 0 #1b2862,inset 0 2px 6px #fff9,0 0 14px #53c7ff42;font-weight:900;font-size:15px}
+.control:active,.action:active,.level-btn:active{transform:translateY(2px);filter:brightness(1.15)}
+.control.up{grid-column:2}.control.left{grid-column:1;grid-row:2}.control.down{grid-column:2;grid-row:2}.control.right{grid-column:3;grid-row:2}
+.control.recommended{background:linear-gradient(145deg,#fff7a2,#ffb52d 48%,#ff6b8c);border-color:#fff6ca;color:#3b204f;box-shadow:0 0 0 3px #fff3a0,0 0 25px #ffcf49,0 5px 0 #9b4d45;animation:pulse 1s infinite alternate}
+@keyframes pulse{from{filter:brightness(1)}to{filter:brightness(1.35)}}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.action{border-radius:999px;padding:12px 10px;font-weight:800;border:1px solid #ffffff77;box-shadow:inset 0 2px 5px #fff5,0 4px 0 #101832;transition:.15s}
+.best{background:linear-gradient(135deg,#ffef9a,#ff9b55,#f25d9c);color:#401e53}
+.delete{background:linear-gradient(135deg,#ffabbc,#fa4e79,#c92d64)}
+.clear{background:linear-gradient(135deg,#b7caff,#7379ef,#7653c9)}
+.undo{background:linear-gradient(135deg,#9affdf,#37bba7,#317db8)}
+.picker{margin-top:13px;display:none;padding:12px;border-radius:25px;background:linear-gradient(145deg,#172143,#30416c);border:2px solid #8ee7ff;box-shadow:0 0 20px #70dfff55}
+.picker.show{display:block;animation:pop .18s ease-out}
+@keyframes pop{from{transform:scale(.95);opacity:.4}to{transform:scale(1);opacity:1}}
+.picker-title{display:flex;align-items:center;justify-content:space-between;font-weight:900;margin-bottom:9px;color:#ffe5a1}
+.close{border-radius:50%;width:30px;height:30px;background:#ff709b}
+.animals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.animal-choice{border-radius:22px;padding:9px 3px 8px;background:linear-gradient(145deg,#ffffff25,#121c3f);border:1px solid #ffffff55;box-shadow:inset 0 2px 5px #fff3;text-align:center;font-size:12px}
+.animal-choice .sil{font-size:27px;display:block;line-height:1.2;filter:drop-shadow(0 0 6px var(--tile))}
+.animal-choice:active{outline:2px solid #fff1a5}
+.note{font-size:12px;color:#c3d1f0;line-height:1.7}
+.status{min-height:23px;margin-top:8px;color:#ffe8a7;text-align:center;font-size:13px;font-weight:700}
+footer{text-align:center;font-size:11px;color:#9eadd8;margin:17px 0 0}
+@media(min-width:640px){.layout{grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr)}.main-panel{grid-row:span 2}.board{gap:10px;padding:13px}.cell{border-radius:25px}.animals{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-<header>
-  <h1>🐪 فاتحون | دمج الحيوانات</h1>
-  <div style="color:#ffd166;font-size:19px;font-weight:bold">👑 أبو سليم AI 👑</div>
-  <div class="sub">سجّل لوحة اللعبة، ونساعدك تختار اتجاه الحركة الأفضل.</div>
+<div class="app">
+<header class="hero">
+ <div class="kicker">FATE7OON • GOLDEN AGE</div>
+ <h1>دمج الحيوانات</h1>
+ <div class="subtitle">خطّط حركتك… وإنت صاحب القرار ✨</div>
+ <div class="stats"><span class="pill">🐾 لوحة 4 × 4</span><span class="pill">🎯 الدمج اليدوي</span><span class="pill">🚫 بدون ظهور تلقائي</span></div>
 </header>
-
-<div class="panel">
-  <div style="margin:4px 0 12px;font-weight:bold">اضغط على أي خانة لاختيار الحيوان</div>
-  <div class="board" id="board"></div>
-
-  <div class="controls">
-    <span></span>
-    <button onclick="move('up')">⬆️ فوق</button>
-    <span></span>
-    <button onclick="move('left')">⬅️ شمال</button>
-    <button onclick="move('down')">⬇️ تحت</button>
-    <button onclick="move('right')">➡️ يمين</button>
-    <button class="best" onclick="bestMove()">🤖 اقترح أفضل حركة</button>
-  </div>
-
-  <div class="tools">
-    <button onclick="deleteSelected()">🗑️ حذف الخانة المحددة</button>
-    <button class="danger" onclick="clearBoard()">🔄 مسح اللوحة بالكامل</button>
-  </div>
-  <div id="status">اختار الحيوانات الموجودة في لعبتك أولًا.</div>
+<div class="layout">
+<section class="panel main-panel">
+ <h2>🌌 ساحة الدمج</h2>
+ <div class="board" id="board" aria-label="لوحة الحيوانات"></div>
+ <div class="hint">اضغط على خانة فاضية لإضافة حيوان، أو على حيوان لتحديده وحذفه.</div>
+ <div class="controls" aria-label="اتجاهات الحركة">
+  <button class="control up" data-dir="up">⬆️ أعلى</button>
+  <button class="control left" data-dir="left">⬅️ يسار</button>
+  <button class="control down" data-dir="down">⬇️ أسفل</button>
+  <button class="control right" data-dir="right">➡️ يمين</button>
+ </div>
+ <div class="actions">
+  <button class="action best" id="bestBtn">✨ أفضل حركة</button>
+  <button class="action delete" id="deleteBtn">🗑️ حذف المحدد</button>
+  <button class="action undo" id="undoBtn">↩️ تراجع</button>
+  <button class="action clear" id="clearBtn">🧹 مسح اللوحة</button>
+ </div>
+ <div class="status" id="status" aria-live="polite">ابدأ بإضافة الحيوانات الموجودة في اللعبة.</div>
+</section>
+<section class="panel">
+ <h2>🪄 أضف حيوانًا</h2>
+ <div class="note">اضغط على أي خانة فاضية في اللوحة، ثم اختار الحيوان والمستوى من القائمة المنبثقة. الموقع لا يضيف حيوانات تلقائيًا بعد الحركة.</div>
+ <div class="picker" id="picker">
+  <div class="picker-title"><span id="pickerTitle">اختار الحيوان للخانة</span><button class="close" id="closePicker" aria-label="إغلاق">×</button></div>
+  <div class="animals" id="animals"></div>
+ </div>
+ <div class="note" style="margin-top:12px">💡 اقتراح أفضل حركة مبدئي؛ اختبره مع قواعد الحدث الحقيقية قبل الاعتماد عليه.</div>
+</section>
+<section class="panel">
+ <h2>📜 طريقة الاستخدام</h2>
+ <div class="note">① سجّل الحيوانات الموجودة على اللوحة.<br>② اضغط «أفضل حركة» لمعرفة الاتجاه المقترح.<br>③ نفّذ الحركة داخل اللعبة ثم اضغط نفس الاتجاه هنا.<br>④ أضف الحيوان الجديد يدويًا في الخانة التي ظهر فيها داخل اللعبة.<br>⑤ لو سجلت حركة بالغلط، استخدم «تراجع».</div>
+</section>
 </div>
-
-<div class="panel">
-  <strong>📖 أسماء الحيوانات</strong>
-  <div class="note">
-    ١ 🐪 الجمل الأخضر · ٢ 🦅 النسر التركواز<br>
-    ٣ 🦎 السحلية السماوي · ٤ 🦁 الأسد الأزرق<br>
-    ٥ 🐻 الدب البنفسجي · ٦ 🐉 التنين البنفسجي<br>
-    ٧ 🐎 الحصان الذهبي · ٨ 🦎 السحلية البرتقالي<br>
-    ٩ 🐘 الفيل الوردي · ١٠ 🦖 الديناصور الأحمر
-  </div>
-  <div class="note">ملاحظة: جرّب الحركة داخل الموقع بعد تسجيل اللوحة، ثم طبّقها في اللعبة الحقيقية. ظهور الحيوانات الجديدة عشوائي، وقد تختلف دقة الاقتراح حسب قواعد الحدث.</div>
+<footer>نموذج أولي مستقل • يحفظ اللوحة على هذا الجهاز فقط</footer>
 </div>
-
-<footer>Fate7oon Beast AI · صنع بحب ❤️ بواسطة أبو سليم</footer>
-
 <script>
-const names = {
-  1:["🐪","الجمل الأخضر"],
-  2:["🦅","النسر التركواز"],
-  3:["🦎","السحلية السماوي"],
-  4:["🦁","الأسد الأزرق"],
-  5:["🐻","الدب البنفسجي"],
-  6:["🐉","التنين البنفسجي"],
-  7:["🐎","الحصان الذهبي"],
-  8:["🦎","السحلية البرتقالي"],
-  9:["🐘","الفيل الوردي"],
-  10:["🦖","الديناصور الأحمر"]
-};
-let board = Array(16).fill(0);
-let selected = -1;
-
+const ANIMALS=[
+ {level:1,name:"الجمل الأخضر",emoji:"🐪",color:"#83ff7d"},
+ {level:2,name:"النسر التركواز",emoji:"🦅",color:"#57f4df"},
+ {level:3,name:"السحلية السماوي",emoji:"🦎",color:"#70d8ff"},
+ {level:4,name:"الأسد الأزرق",emoji:"🦁",color:"#5794ff"},
+ {level:5,name:"الدب البنفسجي",emoji:"🐻",color:"#c88bff"},
+ {level:6,name:"التنين البنفسجي",emoji:"🐉",color:"#a16cff"},
+ {level:7,name:"الحصان الذهبي",emoji:"🐎",color:"#ffd45c"},
+ {level:8,name:"السحلية البرتقالية",emoji:"🦎",color:"#ff9d4d"},
+ {level:9,name:"الفيل",emoji:"🐘",color:"#ff8bb8"},
+ {level:10,name:"الديناصور الأحمر",emoji:"🦖",color:"#ff5f6d"},
+ {level:11,name:"المكافأة الذهبية",emoji:"🌟",color:"#fff19a"}
+];
+const KEY="fate7oon_beast_board_v2";
+let board=Array(16).fill(0), selected=-1, pickerIndex=-1, history=[], suggested=null;
+const boardEl=document.getElementById("board"), picker=document.getElementById("picker"), animalsEl=document.getElementById("animals"), statusEl=document.getElementById("status");
+function save(){try{localStorage.setItem(KEY,JSON.stringify(board))}catch(e){}}
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||"null");if(Array.isArray(v)&&v.length===16)board=v.map(n=>Number.isInteger(n)&&n>=0&&n<=11?n:0)}catch(e){}}
+function say(s){statusEl.textContent=s}
+function snap(){history.push(board.slice());if(history.length>40)history.shift()}
 function render(){
-  const el = document.getElementById("board");
-  el.innerHTML = "";
-  board.forEach((v,i)=>{
-    const c = document.createElement("button");
-    c.className = "cell " + (v ? "l"+v : "empty");
-    if(v){
-      c.innerHTML = `<span class="emoji">${names[v][0]}</span><small>${names[v][1]}</small>`;
-    } else {
-      c.innerHTML = `<span style="font-size:22px">＋</span><small>فارغة</small>`;
-    }
-    if(i===selected)c.style.outline="3px solid #ffd166";
-    c.onclick=()=>choose(i);
-    el.appendChild(c);
-  });
+ boardEl.innerHTML="";
+ board.forEach((level,i)=>{
+  const cell=document.createElement("button");cell.className="cell"+(level?"":" empty")+(selected===i?" selected":"");cell.setAttribute("aria-label",level?ANIMALS[level-1].name:"خانة فارغة");
+  if(level){const a=ANIMALS[level-1];cell.style.setProperty("--tile",a.color);cell.innerHTML='<span class="animal" aria-hidden="true">'+a.emoji+'</span><span class="lvl">مستوى '+level+'</span><span class="remove-mini" aria-hidden="true">×</span>'}
+  cell.addEventListener("click",()=>{if(level){selected=i;closePicker();render();say("تم تحديد "+ANIMALS[level-1].name+" — اضغط حذف المحدد أو اتجاهًا للحركة.")}else{pickerIndex=i;selected=-1;render();openPicker(i)}});
+  boardEl.appendChild(cell);
+ });
+ document.querySelectorAll("[data-dir]").forEach(b=>b.classList.toggle("recommended",b.dataset.dir===suggested));
+ save();
 }
-function say(t){document.getElementById("status").textContent=t}
-function choose(i){
-  selected=i;
-  const current=board[i] ? names[board[i]][1] : "خانة فارغة";
-  const answer=prompt(
-    "الخانة "+(i+1)+" — "+current+
-    "\nاكتب مستوى الحيوان من 1 إلى 10، أو 0 لمسح الخانة:"
-  );
-  if(answer!==null){
-    const n=Number(answer);
-    if(Number.isInteger(n)&&n>=0&&n<=10){
-      board[i]=n;
-      say(n===0?"تم إفراغ الخانة.":"تم اختيار "+names[n][1]+".");
-    } else say("اكتب رقمًا من 0 إلى 10.");
-  }
-  render();
-}
-function deleteSelected(){
-  if(selected<0){say("اضغط على الخانة التي تريد حذفها أولًا.");return}
-  board[selected]=0;
-  say("تم حذف الحيوان من الخانة المحددة.");
-  render();
-}
-function clearBoard(){
-  if(confirm("هل تريد مسح الحيوانات من اللوحة بالكامل؟")){
-    board=Array(16).fill(0);selected=-1;
-    say("تم مسح اللوحة.");
-    render();
-  }
-}
+function openPicker(i){picker.classList.add("show");document.getElementById("pickerTitle").textContent="اختار الحيوان للخانة "+(Math.floor(i/4)+1)+"-"+(i%4+1);document.getElementById("pickerTitle").setAttribute("data-index",i);say("اختار الحيوان اللي ظهر في اللعبة.");}
+function closePicker(){picker.classList.remove("show");pickerIndex=-1}
+document.getElementById("closePicker").addEventListener("click",closePicker);
+function buildPicker(){animalsEl.innerHTML="";ANIMALS.forEach(a=>{const b=document.createElement("button");b.className="animal-choice";b.style.setProperty("--tile",a.color);b.innerHTML='<span class="sil">'+a.emoji+'</span><strong>مستوى '+a.level+'</strong><br><span>'+a.name+'</span>';b.addEventListener("click",()=>{const i=Number(document.getElementById("pickerTitle").getAttribute("data-index"));if(!Number.isInteger(i)||i<0||i>15)return;snap();board[i]=a.level;selected=i;closePicker();suggested=null;render();say("تمت إضافة "+a.name+" في الخانة المحددة.");});animalsEl.appendChild(b)})}
 function lineIndices(dir){
-  const lines=[];
-  for(let k=0;k<4;k++){
-    const line=[];
-    for(let j=0;j<4;j++){
-      if(dir==="left")line.push(k*4+j);
-      if(dir==="right")line.push(k*4+(3-j));
-      if(dir==="up")line.push(j*4+k);
-      if(dir==="down")line.push((3-j)*4+k);
-    }
-    lines.push(line);
-  }
-  return lines;
+ let lines=[];
+ if(dir==="left"||dir==="right"){for(let r=0;r<4;r++){let a=[0,1,2,3].map(c=>r*4+c);if(dir==="right")a.reverse();lines.push(a)}}
+ else{for(let c=0;c<4;c++){let a=[0,1,2,3].map(r=>r*4+c);if(dir==="down")a.reverse();lines.push(a)}}
+ return lines;
 }
-function slide(src,dir){
-  const out=src.slice();
-  let merges=0;
-  for(const line of lineIndices(dir)){
-    const vals=line.map(i=>src[i]).filter(v=>v>0);
-    const result=[];
-    for(let j=0;j<vals.length;j++){
-      if(j+1<vals.length && vals[j]===vals[j+1] && vals[j]<10){
-        result.push(vals[j]+1);j++;merges++;
-      }else result.push(vals[j]);
-    }
-    while(result.length<4)result.push(0);
-    line.forEach((idx,j)=>out[idx]=result[j]);
-  }
-  return {board:out,merges,changed:out.some((v,i)=>v!==src[i])};
+function move(dir,quiet=false){
+ const before=board.slice(),next=board.slice();
+ for(const line of lineIndices(dir)){
+  const vals=line.map(i=>board[i]).filter(v=>v>0),out=[];
+  for(let j=0;j<vals.length;j++){if(j+1<vals.length&&vals[j]===vals[j+1]&&vals[j]<10){out.push(vals[j]+1);j++}else out.push(vals[j])}
+  line.forEach((idx,k)=>next[idx]=out[k]||0);
+ }
+ if(next.every((v,i)=>v===before[i])){if(!quiet)say("الحركة دي مش هتغيّر اللوحة.");return false}
+ snap();board=next;selected=-1;closePicker();suggested=null;render();if(!quiet)say("تم تسجيل الحركة. أضف الحيوان الجديد يدويًا من الخانة الفارغة.");return true;
 }
-function spawn(b){
-  const empty=b.map((v,i)=>v===0?i:-1).filter(i=>i>=0);
-  if(!empty.length)return b;
-  const idx=empty[Math.floor(Math.random()*empty.length)];
-  b[idx]=Math.random()<0.85?1:2;
-  return b;
-}
-function move(dir){
-  const r=slide(board,dir);
-  if(!r.changed){say("الحركة دي مش هتغيّر اللوحة.");return}
-  board=spawn(r.board);
-  selected=-1;render();
-  say("تمت الحركة. الدمج: "+r.merges+". سجّل اللوحة الجديدة حسب اللي ظهر في اللعبة.");
-}
-function score(r){
-  if(!r.changed)return -1e6;
-  const empty=r.board.filter(v=>v===0).length;
-  return empty*10+r.merges*35+Math.max(...r.board)*0.2;
-}
-function bestMove(){
-  const dirs=["up","down","left","right"];
-  let best=null,bestScore=-Infinity;
-  for(const d of dirs){
-    const r=slide(board,d),s=score(r);
-    if(s>bestScore){bestScore=s;best=d}
-  }
-  if(bestScore===-1e6){say("مفيش حركة متاحة؛ اللوحة محتاجة مساحة.");return}
-  const labels={up:"فوق ⬆️",down:"تحت ⬇️",left:"شمال ⬅️",right:"يمين ➡️"};
-  say("الاقتراح المبدئي: "+labels[best]+". راجع النتيجة في اللعبة ثم حدّث اللوحة هنا.");
-  document.querySelectorAll(".controls button").forEach(b=>b.style.boxShadow="");
-}
-render();
+document.querySelectorAll("[data-dir]").forEach(b=>b.addEventListener("click",()=>move(b.dataset.dir)));
+document.getElementById("bestBtn").addEventListener("click",()=>{
+ const dirs=["left","up","right","down"],labels={left:"يسار",up:"أعلى",right:"يمين",down:"أسفل"};
+ let best=null,bestScore=-Infinity;
+ for(const dir of dirs){const before=board.slice();const next=board.slice();for(const line of lineIndices(dir)){const vals=line.map(i=>board[i]).filter(v=>v>0),out=[];for(let j=0;j<vals.length;j++){if(j+1<vals.length&&vals[j]===vals[j+1]&&vals[j]<10){out.push(vals[j]+1);j++}else out.push(vals[j])}line.forEach((idx,k)=>next[idx]=out[k]||0)}
+ if(next.every((v,i)=>v===before[i]))continue;
+ let merges=0;for(let i=0;i<16;i++)if(before[i]&&next[i]&&next[i]>before[i])merges+=next[i]*3;
+ let empty=next.filter(v=>v===0).length;let score=merges+empty*.12;
+ if(score>bestScore){bestScore=score;best=dir}
+ }
+ suggested=best;render();if(best)say("الاتجاه المقترح: "+labels[best]+" — الاقتراح مبدئي.");else say("مفيش حركة متاحة على اللوحة الحالية.");
+});
+document.getElementById("deleteBtn").addEventListener("click",()=>{if(selected<0){say("حدد حيوانًا من اللوحة الأول عشان تحذفه.");return}snap();board[selected]=0;selected=-1;suggested=null;render();say("تم حذف الحيوان المحدد.");});
+document.getElementById("clearBtn").addEventListener("click",()=>{if(!confirm("متأكد إنك عايز تمسح كل الحيوانات من اللوحة؟"))return;snap();board=Array(16).fill(0);selected=-1;suggested=null;closePicker();render();say("اللوحة اتفضّت. أضف الحيوانات يدويًا.");});
+document.getElementById("undoBtn").addEventListener("click",()=>{if(!history.length){say("مفيش خطوة سابقة للتراجع عنها.");return}board=history.pop();selected=-1;suggested=null;closePicker();render();say("تم التراجع عن آخر تعديل.");});
+buildPicker();load();render();
 </script>
 </body>
-      </html>
-      
+  </html>
