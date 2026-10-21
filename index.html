@@ -4,543 +4,580 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#10131d">
-<title>أبو سليم والمداح</title>
+<meta name="theme-color" content="#11152f">
+<title>👑 أبو سليم والمداح</title>
 <style>
 :root{
- --bg:#10131d;--panel:#1b2030;--cell:#252c3e;
- --gold:#f6c96a;--text:#f6f3eb;--muted:#aab3c7;
- --blue:#6bbcff;--red:#ff777d;--green:#69e0ad;
+  --gold:#ffe29a;
+  --panel:#202a50;
+  --green:#69e0ad;
+  --blue:#57d8ff;
 }
 *{box-sizing:border-box}
 body{
- margin:0;min-height:100vh;padding:16px 12px 30px;
- color:var(--text);font-family:system-ui,sans-serif;
- background:radial-gradient(ellipse at top,#29304b 0,#10131d 65%);
+  margin:0;padding:12px;min-height:100vh;color:#fff8ff;
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+  background:radial-gradient(ellipse at top,#51448e,#22284f 45%,#0c1229);
 }
-main{max-width:560px;margin:auto}
-header{text-align:center;margin:7px 0 20px}
-.logo{font-size:clamp(27px,7vw,39px);font-weight:1000;
- color:var(--gold);text-shadow:0 0 24px #f6c96a44}
-.subtitle{font-size:12px;color:var(--muted);margin-top:6px}
+button{font:inherit;cursor:pointer;touch-action:manipulation;color:inherit}
+.app{max-width:780px;margin:auto}
+.hero{
+  text-align:center;padding:20px 12px;border-radius:30px;
+  background:linear-gradient(135deg,#6242aa,#236b91,#91458e);
+  border:2px solid var(--gold);box-shadow:0 7px 0 #171c40,0 0 25px #8a7cff70;
+}
+h1{margin:7px 0;color:#fff0bf;font-size:clamp(26px,7vw,38px)}
+.slogan{font-size:20px;font-weight:900}
+.prayer{margin-top:8px;color:#e5fff9;font-weight:900}
+.stats{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px}
+.pill{padding:7px 12px;border-radius:30px;background:#17264f99;border:1px solid #ffffff55;font-size:12px}
+.layout{display:grid;gap:12px;margin-top:14px}
 .panel{
- background:#1b2030ee;border:1px solid #ffffff12;
- border-radius:22px;padding:13px;margin-bottom:12px;
- box-shadow:0 10px 28px #0003
+  padding:13px;border-radius:27px;min-width:0;
+  background:linear-gradient(145deg,#2b3864f2,#182344f7);
+  border:1px solid #a4bfff66;box-shadow:0 7px 0 #0a1028;
 }
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{text-align:center;background:#ffffff08;border-radius:13px;padding:9px 3px}
-.stat small{display:block;font-size:11px;color:var(--muted)}
-.stat strong{display:block;color:var(--gold);font-size:19px;margin-top:3px}
-.section-title{font-size:14px;color:var(--muted);margin:0 0 10px}
+.panel h2{font-size:17px;margin:0 0 10px;color:#ffe4a0}
 .board{
- direction:ltr;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- gap:7px;background:#0b0e16;padding:8px;border-radius:18px;
- width:100%;aspect-ratio:1
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;
+  padding:9px;border-radius:25px;
+  background:linear-gradient(145deg,#121b3a,#35416c);
+  border:2px solid #b8a8ff;
 }
 .cell{
- position:relative;min-width:0;min-height:0;padding:0;
- border:1px solid #ffffff0a;border-radius:12px;background:var(--cell);
- display:flex;align-items:center;justify-content:center;
- overflow:hidden;cursor:pointer;transition:.15s
+  position:relative;aspect-ratio:1;min-width:0;padding:3px;
+  border-radius:18px;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:3px;overflow:hidden;
+  background:radial-gradient(circle at 35% 20%,#50628a,#253153 70%);
+  border:1px solid #ffffff25;box-shadow:inset 0 2px 5px #fff2;
 }
-.cell:active{transform:scale(.96)}
-.cell.empty{background:#ffffff06}
-.cell img{width:88%;height:88%;object-fit:contain;pointer-events:none}
-.level{
- position:absolute;bottom:3px;right:4px;font-size:10px;color:white;
- background:#080a11cc;padding:1px 5px;border-radius:7px
+.cell.empty{
+  background:radial-gradient(circle at 35% 25%,#35496c,#192541 75%);
+  border:1px dashed #8db5dc77;
 }
-.cell.hint{outline:3px solid var(--green);outline-offset:-3px}
-.cell.target{outline:3px solid var(--gold);outline-offset:-3px}
+.cell.empty:after{content:"+";font-size:25px;color:#a5c4e9a8}
+.cell.selected{outline:3px solid #fff3a4;box-shadow:0 0 17px #ffe987}
+.animal-img{
+  width:78%;height:72%;object-fit:contain;
+  filter:grayscale(1) brightness(0) drop-shadow(0 0 5px var(--tile,#d6efff))
+    drop-shadow(0 0 10px var(--tile,#d6efff));
+}
+.lvl{font-size:10px;font-weight:800;color:white;text-shadow:0 1px 4px #000}
+.hint,.note{color:#bdcbed;font-size:12px;line-height:1.8}
+.hint{text-align:center;margin:9px 2px 0}
 .arrows{
- direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);
- gap:8px;max-width:240px;margin:auto
+  direction:ltr;display:grid;
+  grid-template-columns:repeat(3,58px);
+  grid-template-rows:repeat(3,48px);
+  justify-content:center;gap:7px;margin:13px auto 0;
 }
-button{font:inherit;cursor:pointer;touch-action:manipulation}
-.arrow,.action,.animal-option,.minor{
- border:1px solid #ffffff14;border-radius:14px;color:var(--text);
- background:#ffffff0b;min-height:44px;transition:.15s
+.arrow{
+  width:58px;height:48px;min-height:0;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:18px;font-size:25px;font-weight:900;
+  color:#071b36;background:linear-gradient(145deg,#75e4ff,#5a72f0);
+  border:2px solid #c4edff;box-shadow:0 4px 0 #1b2862;
 }
-.arrow{font-size:25px;font-weight:900;color:var(--blue)}
-.up{grid-column:2}.down{grid-column:2}
-/* تم تبديل مكاني زر اليمين وزر الشمال */
-.left{grid-column:3}.right{grid-column:1}
+.up{grid-column:2;grid-row:1}
+.down{grid-column:2;grid-row:3}
+/* سهم اليمين على الشمال وسهم الشمال على اليمين */
+.left{grid-column:3;grid-row:2}
+.right{grid-column:1;grid-row:2}
 .arrow.recommended{
- color:#07140e;background:var(--green);border-color:#b7ffda;
- box-shadow:0 0 0 3px #69e0ad55,0 0 24px #69e0adbb;
- animation:pulse 1s infinite
+  color:#07140e;background:var(--green);border-color:#b7ffda;
+  box-shadow:0 0 0 3px #69e0ad55,0 0 24px #69e0adbb;
+  animation:pulse 1s infinite;
 }
-@keyframes pulse{50%{box-shadow:0 0 0 5px #69e0ad33,0 0 30px #69e0adcc}}
-.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.action{padding:10px 5px;font-size:13px;font-weight:750}
-.action.primary{color:var(--gold);background:#f6c96a18;border-color:#f6c96a55}
-.action.danger{color:var(--red)}
-.action.active{outline:2px solid var(--gold)}
-.status{
- background:#0e121c;border-radius:13px;padding:12px;
- min-height:48px;font-size:13px;line-height:1.9;overflow-wrap:anywhere
+@keyframes pulse{50%{filter:brightness(1.3)}}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}
+.action{
+  min-height:45px;padding:10px 7px;border-radius:22px;
+  font-size:13px;font-weight:900;border:1px solid #ffffff77;
+  box-shadow:inset 0 2px 5px #fff5,0 4px 0 #101832;
 }
-.status b{color:var(--gold)}
-.footer{text-align:center;color:var(--muted);font-size:11px;margin:18px 0}
-.hidden{display:none!important}
-
-/* نافذة اختيار الحيوان */
+.best{background:linear-gradient(135deg,#ffef9a,#ff9b55,#f25d9c);color:#401e53}
+.undo{background:linear-gradient(135deg,#9affdf,#37bba7,#317db8)}
+.delete{background:linear-gradient(135deg,#ffabbc,#fa4e79,#c92d64)}
+.clear{background:linear-gradient(135deg,#b7caff,#7379ef,#7653c9)}
+.action.active{outline:3px solid #fff1a5;filter:brightness(1.2)}
+.status{min-height:24px;margin-top:10px;color:#ffe8a7;text-align:center;font-size:13px;font-weight:700;line-height:1.7}
+.picker{
+  position:fixed;z-index:1000;display:none;
+  width:min(240px,calc(100vw - 24px));padding:11px;
+  border-radius:23px;background:linear-gradient(145deg,#172143,#30416c);
+  border:2px solid #8ee7ff;box-shadow:0 12px 35px #000b;
+  max-height:70vh;overflow:auto;
+}
+.picker.show{display:block}
+.picker-title{display:flex;align-items:center;justify-content:space-between;font-weight:900;margin-bottom:9px;color:#ffe5a1}
+.close{border-radius:50%;width:30px;height:30px;background:#ff709b;border:0}
+.animals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.animal-choice{
+  aspect-ratio:1;border-radius:50%;padding:5px;
+  background:radial-gradient(circle at 32% 20%,#ffffff44,#182344 74%);
+  border:1px solid #ffffff65;display:flex;align-items:center;justify-content:center;
+}
+.animal-choice img{
+  width:90%;height:90%;object-fit:contain;
+  filter:grayscale(1) brightness(0) drop-shadow(0 0 5px var(--tile));
+}
 .modal-backdrop{
- position:fixed;inset:0;z-index:1000;
- display:flex;align-items:center;justify-content:center;
- padding:15px;background:#05070cd9;backdrop-filter:blur(7px)
+  position:fixed;inset:0;z-index:2000;background:#050817cc;
+  display:none;align-items:center;justify-content:center;padding:20px;
 }
+.modal-backdrop.show{display:flex}
 .modal{
- width:min(100%,390px);max-height:85dvh;overflow:auto;
- background:#1b2030;border:1px solid #f6c96a55;border-radius:22px;
- padding:14px;box-shadow:0 20px 70px #0009;
- animation:pop .18s ease-out
+  width:min(330px,100%);padding:20px;border-radius:25px;text-align:center;
+  background:linear-gradient(145deg,#293a68,#151d3b);
+  border:2px solid #ffe29a;box-shadow:0 12px 40px #0009;
 }
-@keyframes pop{from{transform:scale(.94);opacity:.5}to{transform:scale(1);opacity:1}}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.modal-head h2{font-size:16px;margin:0;color:var(--gold)}
-.close-modal{width:36px;height:36px;border-radius:11px;color:white;background:#ffffff10;border:0;font-size:20px}
-.picker{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
-.animal-option{
- display:flex;flex-direction:column;align-items:center;justify-content:center;
- min-width:0;padding:6px 2px;gap:3px;min-height:91px
+.modal img{
+  width:95px;height:95px;object-fit:contain;
+  filter:grayscale(1) brightness(0) drop-shadow(0 0 8px var(--tile));
 }
-.animal-option:active{background:#f6c96a22;transform:scale(.96)}
-.animal-option img{width:100%;height:48px;object-fit:contain}
-.animal-option span{font-size:10px;text-align:center}
-.animal-option small{font-size:9px;color:var(--muted)}
-.modal-note{font-size:11px;color:var(--muted);line-height:1.7;margin:12px 0 0}
-@media(max-width:360px){
- body{padding:10px 7px}.panel{padding:10px}
- .board{gap:5px;padding:6px}.cell{border-radius:9px}
- .actions{gap:6px}.action{font-size:12px}
- .animal-option img{height:42px}
+.modal h3{margin:8px 0;color:#ffe29a}
+.modal p{font-size:13px;color:#d7e2ff}
+.modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.modal-buttons button{border:0;border-radius:18px;padding:12px 7px;font-weight:900}
+.keep{background:#65ddb0;color:#092b27}
+.remove{background:#ff557d;color:white}
+.cancel{background:#6575b9;color:white;margin-top:8px;width:100%}
+footer{text-align:center;font-size:11px;color:#9eadd8;margin:16px 0 0}
+@media(min-width:640px){
+ .layout{grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr)}
+ .main-panel{grid-row:span 2}
+ .board{gap:10px;padding:12px}
+ .cell{border-radius:23px}
 }
 </style>
 </head>
 <body>
-<main>
-<header>
- <div class="logo">👑 أبو سليم والمداح</div>
- <div class="subtitle">ذكاء الدمج • تحليل الحركة • السيطرة على اللوحة</div>
+<div class="app">
+<header class="hero">
+  <div>👑 FATE7OON • GOLDEN AGE 👑</div>
+  <h1>أبو سليم والمداح</h1>
+  <div class="slogan">مع أبو سليم مفيش مستحيل ❤️</div>
+  <div class="prayer">مداح مدد يااارب 🤲✨</div>
+  <div class="stats">
+    <span class="pill">🐾 لوحة 4 × 4</span>
+    <span class="pill">🧠 اقتراح أفضل حركة</span>
+    <span class="pill">🚫 مفيش حيوان تلقائي</span>
+  </div>
 </header>
 
-<section class="panel stats">
- <div class="stat"><small>النقاط</small><strong id="score">0</strong></div>
- <div class="stat"><small>أعلى مستوى</small><strong id="highest">—</strong></div>
- <div class="stat"><small>الخانات الفاضية</small><strong id="empty">16</strong></div>
-</section>
+<div class="layout">
+<section class="panel main-panel">
+  <h2>🌌 ساحة الدمج</h2>
+  <div class="board" id="board"></div>
+  <div class="hint">اضغط على خانة فاضية لإضافة حيوان، أو اضغط على حيوان لاختيار حذفه أو إبقائه.</div>
 
-<section class="panel">
- <h2 class="section-title">🐾 لوحة الحيوانات 4 × 4</h2>
- <div class="board" id="board"></div>
-</section>
-
-<section class="panel">
- <h2 class="section-title">🎮 تحريك اللوحة</h2>
- <div class="arrows">
-  <button class="arrow up" data-move="up" aria-label="أعلى">↑</button>
-  <button class="arrow left" data-move="left" aria-label="شمال">←</button>
-  <button class="arrow down" data-move="down" aria-label="أسفل">↓</button>
-  <button class="arrow right" data-move="right" aria-label="يمين">→</button>
- </div>
-</section>
-
-<section class="panel">
- <h2 class="section-title">🧠 أدوات المساعدة</h2>
- <div class="actions">
-  <button class="action primary" id="best">🤖 أفضل حركة</button>
-  <button class="action" id="undo">↩️ تراجع</button>
-  <button class="action" id="add">🐾 إضافة حيوان</button>
-  <button class="action" id="swap">🔄 تبديل ذكي</button>
-  <button class="action" id="upgrade">⬆️ رفع ذكي</button>
-  <button class="action danger" id="delete">🗑️ اقتراح حذف</button>
-  <button class="action" id="clear">🧹 مسح اللوحة</button>
-  <button class="action" id="cancel">✖ إلغاء الاختيار</button>
- </div>
-</section>
-
-<section class="panel">
- <h2 class="section-title">📊 نتيجة التحليل</h2>
- <div class="status" id="status" aria-live="polite">
-  اضغط على خانة فارغة لاختيار حيوان، أو حرّك اللوحة بالأسهم.
- </div>
-</section>
-<div class="footer">أبو سليم والمداح • مساعد دمج الحيوانات</div>
-</main>
-
-<!-- نافذة الحيوانات المنبثقة -->
-<div class="modal-backdrop hidden" id="modalBackdrop">
- <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-head">
-   <h2 id="modalTitle">🐾 اختار الحيوان</h2>
-   <button class="close-modal" id="closeModal" aria-label="إغلاق">×</button>
+  <div class="arrows">
+    <button class="arrow up" data-dir="up" aria-label="أعلى">↑</button>
+    <button class="arrow left" data-dir="left" aria-label="شمال">←</button>
+    <button class="arrow down" data-dir="down" aria-label="أسفل">↓</button>
+    <button class="arrow right" data-dir="right" aria-label="يمين">→</button>
   </div>
-  <div class="picker" id="picker"></div>
-  <p class="modal-note" id="modalNote">اختار الحيوان اللي عايز تضيفه للخانة.</p>
- </div>
+
+  <div class="actions">
+    <button class="action best" id="bestBtn">🧠 أفضل حركة</button>
+    <button class="action undo" id="undoBtn">↩️ تراجع</button>
+    <button class="action" id="addBtn" style="background:linear-gradient(135deg,#7ee7ff,#3c91dd)">➕ إضافة حيوان</button>
+    <button class="action" id="swapBtn" style="background:linear-gradient(135deg,#d7b5ff,#8b65e8)">🔀 تبديل ذكي</button>
+    <button class="action" id="upgradeBtn" style="background:linear-gradient(135deg,#a7ffcc,#38b98c);color:#102e25">⬆️ رفع ذكي</button>
+    <button class="action delete" id="deleteBtn">🗑️ اقتراح حذف</button>
+    <button class="action clear" id="clearBtn">🧹 مسح اللوحة</button>
+    <button class="action" id="cancelBtn" style="background:linear-gradient(135deg,#c5cde0,#747e9d)">✖️ إلغاء الاختيار</button>
+  </div>
+  <div class="status" id="status" aria-live="polite">ابدأ بإضافة الحيوانات الموجودة في اللعبة.</div>
+</section>
+
+<section class="panel">
+  <h2>🐾 صور الحيوانات</h2>
+  <div class="note">
+    اضغط على أي خانة فاضية علشان تظهر قائمة الحيوانات. اختار نفس الحيوان الموجود في اللعبة.
+    بعد كل حركة، أضف الحيوان الجديد بنفسك؛ الموقع مش هيضيف حيوانات تلقائيًا.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>📜 طريقة الاستخدام</h2>
+  <div class="note">
+    ① سجّل الحيوانات الموجودة على اللوحة.<br>
+    ② اضغط «أفضل حركة» علشان يحلل الموقع الوضع ويقترح اتجاهًا.<br>
+    ③ نفّذ الحركة في اللعبة، وبعدها سجّل الحركة هنا.<br>
+    ④ أضف الحيوان الجديد يدويًا.<br>
+    ⑤ عند الضغط على حيوان، اختار «حذف الحيوان» أو «إبقاء الحيوان».<br>
+    ⑥ زر «تراجع» يرجع آخر تعديل.
+  </div>
+</section>
+</div>
+<footer>أبو سليم والمداح 👑 • حفظ اللوحة على هذا الجهاز</footer>
+</div>
+
+<div class="picker" id="picker">
+  <div class="picker-title">
+    <span>اختار الحيوان</span>
+    <button class="close" id="closePicker" aria-label="إغلاق">×</button>
+  </div>
+  <div class="animals" id="animals"></div>
+</div>
+
+<div class="modal-backdrop" id="animalModal">
+  <div class="modal">
+    <img id="modalImage" src="" alt="الحيوان">
+    <h3 id="modalTitle">الحيوان المحدد</h3>
+    <p>تحب تحذف الحيوان ده ولا تسيبه مكانه؟</p>
+    <div class="modal-buttons">
+      <button class="remove" id="confirmDelete">🗑️ حذف الحيوان</button>
+      <button class="keep" id="keepAnimal">✅ إبقاء الحيوان</button>
+    </div>
+    <button class="cancel" id="cancelModal">رجوع</button>
+  </div>
 </div>
 
 <script>
-"use strict";
-
-const SIZE=4, MAX_LEVEL=11;
-const SAVE_KEY="abu_selim_al_maddah_v2";
-const ANIMALS=[
- {name:"الجمل",file:"Camel.png"},
- {name:"النسر",file:"Eagle.png"},
- {name:"الفهد",file:"Panther.png"},
- {name:"الأسد",file:"Lion.png"},
- {name:"الذئب",file:"Wolf.png"},
- {name:"فرس البحر",file:"Seahorse.png"},
- {name:"الحصان",file:"Horse.png"},
- {name:"الدب",file:"Bear.png"},
- {name:"الفيل",file:"Elephant.png"},
- {name:"الثور",file:"Bull.png"},
- {name:"الروح",file:"Spirit.png"}
-];
 const IMAGE_BASE="https://raw.githubusercontent.com/eng-misbah/misbah-games/main/";
-const $=id=>document.getElementById(id);
-const copyBoard=b=>b.slice();
 
+const ANIMALS=[
+ {level:1,name:"الجمل",file:"Camel.png",color:"#70e957"},
+ {level:2,name:"النسر",file:"Eagle.png",color:"#50e5f3"},
+ {level:3,name:"الفهد",file:"Panther.png",color:"#9ee8ff"},
+ {level:4,name:"الأسد",file:"Lion.png",color:"#4188ff"},
+ {level:5,name:"الذئب",file:"Wolf.png",color:"#ff8fcf"},
+ {level:6,name:"فرس البحر",file:"Seahorse.png",color:"#b36aff"},
+ {level:7,name:"الحصان",file:"Horse.png",color:"#ffdf4e"},
+ {level:8,name:"الدب",file:"Bear.png",color:"#ff9b42"},
+ {level:9,name:"الفيل",file:"Elephant.png",color:"#ff6f77"},
+ {level:10,name:"الثور",file:"Bull.png",color:"#a91e38"},
+ {level:11,name:"الروح",file:"Spirit.png",color:"#c6c9ff"}
+];
+
+const KEY="abu_selim_al_maddah_v2";
 let board=Array(16).fill(0);
-let score=0,history=[];
-let mode="",pendingCell=null,firstSwap=-1;
-let highlighted=[],recommendedDirection=null;
+let selected=-1,pickerIndex=-1,history=[],suggested=null,mode="";
+let modalIndex=-1;
 
-function animalName(level){return level?ANIMALS[level-1].name:"";}
-function imageUrl(level){return IMAGE_BASE+ANIMALS[level-1].file;}
-function emptyCount(b=board){return b.filter(v=>v===0).length;}
-function highestLevel(b=board){return Math.max(0,...b);}
-function sameBoard(a,b){return a.every((v,i)=>v===b[i]);}
-function say(message){$("status").textContent=message;}
+const boardEl=document.getElementById("board");
+const picker=document.getElementById("picker");
+const animalsEl=document.getElementById("animals");
+const statusEl=document.getElementById("status");
+const modal=document.getElementById("animalModal");
 
+function imageURL(animal){
+ return IMAGE_BASE+encodeURIComponent(animal.file).replace(/%2F/g,"/");
+}
+function say(message){statusEl.textContent=message}
 function save(){
- try{localStorage.setItem(SAVE_KEY,JSON.stringify({board,score}));}catch(e){}
+ try{localStorage.setItem(KEY,JSON.stringify(board))}catch(e){}
 }
 function load(){
  try{
-  const d=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");
-  if(d&&Array.isArray(d.board)&&d.board.length===16&&
-     d.board.every(v=>Number.isInteger(v)&&v>=0&&v<=MAX_LEVEL)){
-   board=d.board;score=Number(d.score)||0;
+  const data=JSON.parse(localStorage.getItem(KEY)||"null");
+  if(Array.isArray(data)&&data.length===16){
+   board=data.map(v=>Number.isInteger(v)&&v>=0&&v<=ANIMALS.length?v:0);
   }
  }catch(e){}
 }
-function snapshot(){
- history.push({board:copyBoard(board),score});
- if(history.length>100)history.shift();
+function snap(){
+ history.push(board.slice());
+ if(history.length>50)history.shift();
 }
-function clearRecommendation(){
- recommendedDirection=null;
- document.querySelectorAll("[data-move]").forEach(b=>b.classList.remove("recommended"));
+function closePicker(){
+ picker.classList.remove("show");
+ pickerIndex=-1;
 }
-function directionName(d){
- return {left:"الشمال",right:"اليمين",up:"فوق",down:"تحت"}[d];
+function closeModal(){
+ modal.classList.remove("show");
+ modalIndex=-1;
 }
 function render(){
- const root=$("board");root.innerHTML="";
+ boardEl.innerHTML="";
  board.forEach((level,i)=>{
   const cell=document.createElement("button");
-  cell.type="button";
-  cell.className="cell"+(level===0?" empty":"")+
-   (highlighted.includes(i)?" hint":"")+
-   (mode==="add"&&pendingCell===i?" target":"");
-  cell.setAttribute("aria-label",level?animalName(level):"خانة فارغة");
+  cell.className="cell"+(level===0?" empty":"")+(selected===i?" selected":"");
+  cell.setAttribute("aria-label",level?ANIMALS[level-1].name:"خانة فارغة");
   if(level){
+   const animal=ANIMALS[level-1];
+   cell.style.setProperty("--tile",animal.color);
    const img=document.createElement("img");
-   img.src=imageUrl(level);img.alt=animalName(level);
-   img.onerror=()=>{img.style.display="none";};
-   cell.appendChild(img);
-   const badge=document.createElement("span");
-   badge.className="level";badge.textContent=level;
-   cell.appendChild(badge);
-  }else{
-   const plus=document.createElement("span");
-   plus.textContent="+";
-   plus.style.cssText="color:#647087;font-size:19px";
-   cell.appendChild(plus);
+   img.className="animal-img";
+   img.src=imageURL(animal);
+   img.alt=animal.name;
+   img.onerror=()=>{img.style.display="none";cell.insertAdjacentText("afterbegin",animal.name)};
+   const label=document.createElement("span");
+   label.className="lvl";
+   label.textContent="مستوى "+level;
+   cell.append(img,label);
   }
-  cell.addEventListener("click",()=>cellClick(i));
-  root.appendChild(cell);
- });
- $("score").textContent=score.toLocaleString("en-US");
- $("highest").textContent=highestLevel()?animalName(highestLevel()):"—";
- $("empty").textContent=emptyCount();
- save();
-}
-
-function openPicker(cellIndex=null){
- pendingCell=cellIndex;
- mode="add";
- firstSwap=-1;highlighted=[];
- $("modalTitle").textContent=cellIndex===null?
-  "🐾 اختار الحيوان وبعدها الخانة":"🐾 اختار حيوان للخانة";
- $("modalNote").textContent=cellIndex===null?
-  "اختار الحيوان، وبعدها اضغط على أي خانة فاضية في اللوحة.":
-  "اختيارك هيتحط مباشرة في الخانة اللي ضغطت عليها.";
- const picker=$("picker");picker.innerHTML="";
- ANIMALS.forEach((a,index)=>{
-  const level=index+1;
-  const btn=document.createElement("button");
-  btn.type="button";btn.className="animal-option";
-  const img=document.createElement("img");
-  img.src=IMAGE_BASE+a.file;img.alt=a.name;
-  img.onerror=()=>{img.style.display="none";};
-  const name=document.createElement("span");name.textContent=a.name;
-  const small=document.createElement("small");small.textContent="مستوى "+level;
-  btn.append(img,name,small);
-  btn.addEventListener("click",()=>{
-   if(pendingCell!==null){
-    if(board[pendingCell]!==0){
-     say("الخانة مش فاضية؛ اختار خانة فاضية.");
-     closePicker();return;
-    }
-    snapshot();board[pendingCell]=level;
-    const target=pendingCell;
-    closePicker();render();
-    say("تمت إضافة "+a.name+" للخانة "+(target+1)+".");
+  cell.addEventListener("click",()=>{
+   if(mode==="add"){
+    if(level){say("اختار خانة فاضية لإضافة الحيوان.");return}
+    pickerIndex=i;openPicker(i);return;
+   }
+   if(mode==="swap"||mode==="upgrade"||mode==="delete"){
+    handleModeClick(i);return;
+   }
+   if(level){
+    selected=i;closePicker();render();openAnimalModal(i);
    }else{
-    selectedAnimal=level;
-    closePicker();mode="add";
-    say("اخترت "+a.name+". اضغط على خانة فاضية لإضافته.");
-    render();
+    selected=-1;pickerIndex=i;render();openPicker(i);
    }
   });
-  picker.appendChild(btn);
+  boardEl.appendChild(cell);
  });
- $("modalBackdrop").classList.remove("hidden");
+ document.querySelectorAll("[data-dir]").forEach(button=>{
+  button.classList.toggle("recommended",button.dataset.dir===suggested);
+ });
+ save();
 }
-let selectedAnimal=0;
+function openPicker(i){
+ closeModal();
+ pickerIndex=i;
+ picker.classList.add("show");
+ const cell=boardEl.children[i];
+ const rect=cell.getBoundingClientRect();
+ const width=Math.min(240,innerWidth-24);
+ const height=Math.min(picker.scrollHeight||280,innerHeight*.7);
+ let left=Math.max(12,Math.min(innerWidth-width,rect.left+(rect.width-width)/2));
+ let top=rect.bottom+8;
+ if(top+height>innerHeight-12)top=rect.top-height-8;
+ if(top<12)top=Math.max(12,Math.min(innerHeight-height-12,rect.top));
+ picker.style.left=left+"px";
+ picker.style.top=top+"px";
+ say("اختار الحيوان اللي عايز تضيفه.");
+}
+document.getElementById("closePicker").addEventListener("click",closePicker);
 
-function closePicker(){
- $("modalBackdrop").classList.add("hidden");
+function buildPicker(){
+ animalsEl.innerHTML="";
+ ANIMALS.forEach(animal=>{
+  const button=document.createElement("button");
+  button.className="animal-choice";
+  button.style.setProperty("--tile",animal.color);
+  button.title=animal.name;
+  const img=document.createElement("img");
+  img.src=imageURL(animal);
+  img.alt=animal.name;
+  img.onerror=()=>{img.style.display="none";button.textContent=animal.name};
+  button.appendChild(img);
+  button.addEventListener("click",()=>{
+   if(pickerIndex<0)return;
+   const index=pickerIndex;
+   snap();
+   board[index]=animal.level;
+   selected=index;
+   closePicker();
+   mode="";
+   updateModeButtons();
+   suggested=null;
+   render();
+   say("تمت إضافة "+animal.name+" في الخانة المحددة.");
+  });
+  animalsEl.appendChild(button);
+ });
 }
-function cancelMode(){
- mode="";pendingCell=null;selectedAnimal=0;firstSwap=-1;
- highlighted=[];closePicker();clearRecommendation();updateButtons();render();
- say("تم إلغاء الاختيار.");
+function openAnimalModal(i){
+ modalIndex=i;
+ const animal=ANIMALS[board[i]-1];
+ if(!animal)return;
+ document.getElementById("modalImage").src=imageURL(animal);
+ document.getElementById("modalImage").style.setProperty("--tile",animal.color);
+ document.getElementById("modalTitle").textContent=animal.name+" — مستوى "+animal.level;
+ modal.classList.add("show");
 }
-function updateButtons(){
- $("add").classList.toggle("active",mode==="add");
- $("swap").classList.toggle("active",mode==="swap");
- $("upgrade").classList.toggle("active",mode==="upgrade");
- $("delete").classList.toggle("active",mode==="delete");
-}
-function undo(){
- if(!history.length){say("مفيش تعديل سابق نرجع له.");return;}
- const old=history.pop();board=old.board;score=old.score;
- highlighted=[];clearRecommendation();render();
- say("تم التراجع عن آخر تعديل.");
-}
+document.getElementById("keepAnimal").addEventListener("click",()=>{
+ closeModal();
+ say("تمام، الحيوان هيفضل مكانه زي ما هو. ✅");
+});
+document.getElementById("cancelModal").addEventListener("click",closeModal);
+document.getElementById("confirmDelete").addEventListener("click",()=>{
+ if(modalIndex<0)return;
+ snap();
+ board[modalIndex]=0;
+ selected=-1;
+ suggested=null;
+ closeModal();
+ render();
+ say("تم حذف الحيوان اللي اخترته. 🗑️");
+});
 
-/* قواعد الحركة والدمج */
-function mergeLine(line){
- const nums=line.filter(v=>v!==0),out=[];
- let gained=0,merges=0;
- for(let i=0;i<nums.length;i++){
-  if(i+1<nums.length&&nums[i]===nums[i+1]&&nums[i]<MAX_LEVEL){
-   const next=nums[i]+1;out.push(next);
-   gained+=Math.pow(2,next);merges++;i++;
-  }else out.push(nums[i]);
- }
- while(out.length<SIZE)out.push(0);
- return {line:out,gained,merges};
-}
-function shiftBoard(source,dir){
- const b=copyBoard(source);let gained=0,merges=0;
- for(let n=0;n<4;n++){
-  const indices=[];
-  for(let k=0;k<4;k++){
-   if(dir==="left")indices.push(n*4+k);
-   if(dir==="right")indices.push(n*4+(3-k));
-   if(dir==="up")indices.push(k*4+n);
-   if(dir==="down")indices.push((3-k)*4+n);
+function lineIndices(dir){
+ const lines=[];
+ if(dir==="left"||dir==="right"){
+  for(let r=0;r<4;r++){
+   const line=[0,1,2,3].map(c=>r*4+c);
+   if(dir==="right")line.reverse();
+   lines.push(line);
   }
-  const res=mergeLine(indices.map(i=>b[i]));
-  gained+=res.gained;merges+=res.merges;
-  indices.forEach((idx,k)=>b[idx]=res.line[k]);
- }
- return {board:b,gained,merges};
-}
-
-/* تقييم أعمق نسبيًا للحركات المتاحة */
-function evaluate(b){
- let value=emptyCount(b)*280;
- const max=highestLevel(b);
- value+=max*35;
- for(let r=0;r<4;r++){
+ }else{
   for(let c=0;c<4;c++){
-   const v=b[r*4+c];if(!v)continue;
-   value+=v*v*2;
-   for(const [dr,dc] of [[1,0],[0,1]]){
-    const rr=r+dr,cc=c+dc;
-    if(rr<4&&cc<4){
-     const n=b[rr*4+cc];
-     if(n===v&&v<MAX_LEVEL)value+=220+v*15;
-     else if(n&&Math.abs(n-v)===1)value+=22;
-    }
-   }
+   const line=[0,1,2,3].map(r=>r*4+c);
+   if(dir==="down")line.reverse();
+   lines.push(line);
   }
  }
- return value;
+ return lines;
 }
-function bestMove(source=board){
- let best=null;
- for(const dir of ["left","right","up","down"]){
-  const first=shiftBoard(source,dir);
-  if(sameBoard(source,first.board))continue;
-  let future=-Infinity;
-  for(const d2 of ["left","right","up","down"]){
-   const second=shiftBoard(first.board,d2);
-   const v=sameBoard(first.board,second.board)?
-    evaluate(first.board):evaluate(second.board)+second.gained*.25;
-   future=Math.max(future,v);
+function calculate(dir,source=board){
+ const next=source.slice();
+ for(const line of lineIndices(dir)){
+  const values=line.map(i=>source[i]).filter(v=>v>0);
+  const output=[];
+  for(let j=0;j<values.length;j++){
+   if(j+1<values.length&&values[j]===values[j+1]&&values[j]<ANIMALS.length){
+    output.push(values[j]+1);
+    j++;
+   }else output.push(values[j]);
   }
-  const value=evaluate(first.board)+first.gained*.6+
-   first.merges*130+future*.32;
-  if(!best||value>best.value)best={dir,...first,value};
+  line.forEach((index,k)=>next[index]=output[k]||0);
  }
- return best;
+ return next;
 }
 function move(dir){
- clearRecommendation();
- const res=shiftBoard(board,dir);
- if(sameBoard(board,res.board)){
-  say("الحركة ناحية "+directionName(dir)+" مش هتغيّر اللوحة.");
+ if(mode){say("ألغِ اختيار الأداة الأول قبل تحريك اللوحة.");return}
+ const next=calculate(dir);
+ if(next.every((v,i)=>v===board[i])){
+  say("الحركة دي مش هتغيّر اللوحة؛ جرّب اتجاه تاني.");
   return;
  }
- snapshot();board=res.board;score+=res.gained;
- highlighted=[];render();
- say("اتحركت ناحية "+directionName(dir)+
-  ". الدمجات: "+res.merges+" • النقاط المكتسبة: "+res.gained+".");
+ const before=board.filter(Boolean).length;
+ const after=next.filter(Boolean).length;
+ snap();
+ board=next;
+ selected=-1;
+ closePicker();
+ closeModal();
+ suggested=null;
+ render();
+ const merges=before-after;
+ say(merges>0
+  ?"✅ حصل دمج! الحيوان الناتج بقى مستوى أعلى. أضف الحيوان الجديد يدويًا."
+  :"تم تحريك الحيوانات. مفيش حيوان جديد هيظهر تلقائيًا.");
 }
+document.querySelectorAll("[data-dir]").forEach(button=>{
+ button.addEventListener("click",()=>move(button.dataset.dir));
+});
 
-function cellClick(i){
- clearRecommendation();
- if(mode==="add"){
-  if(board[i]!==0){
-   say("الخانة مش فاضية. اضغط على خانة فاضية.");
-   return;
+function evaluate(position){
+ const values=position.filter(Boolean);
+ const empty=16-values.length;
+ const highest=Math.max(0,...values);
+ let mergePotential=0,near=0;
+ for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+  const v=position[r*4+c];
+  if(!v)continue;
+  for(const [rr,cc] of [[r+1,c],[r,c+1]]){
+   if(rr>3||cc>3)continue;
+   const w=position[rr*4+cc];
+   if(!w)continue;
+   if(v===w)mergePotential+=18+v*4;
+   else near-=Math.abs(v-w)*.35;
   }
-  if(selectedAnimal){
-   snapshot();board[i]=selectedAnimal;
-   const name=animalName(selectedAnimal);
-   mode="";selectedAnimal=0;pendingCell=null;
-   updateButtons();render();say("تمت إضافة "+name+" يدويًا.");
-  }else openPicker(i);
-  return;
  }
- if(mode==="swap"){
-  if(!board[i]){say("اختار خانة فيها حيوان.");return;}
-  if(firstSwap<0){
-   firstSwap=i;highlighted=[i];render();
-   say("اختار الحيوان التاني اللي عايز تبدله.");
-  }else{
-   if(firstSwap===i)return;
-   snapshot();[board[firstSwap],board[i]]=[board[i],board[firstSwap]];
-   firstSwap=-1;mode="";highlighted=[];updateButtons();render();
-   say("تم تبديل الحيوانين.");
-  }
-  return;
+ let corner=0;
+ if(highest&&(position[0]===highest||position[3]===highest||position[12]===highest||position[15]===highest))corner=highest*.7;
+ return empty*2+mergePotential+near+highest*.4+corner;
+}
+function search(position,depth){
+ if(depth===0)return evaluate(position);
+ let best=-Infinity,changed=false;
+ for(const dir of ["left","up","right","down"]){
+  const next=calculate(dir,position);
+  if(next.every((v,i)=>v===position[i]))continue;
+  changed=true;
+  const gained=position.filter(Boolean).length-next.filter(Boolean).length;
+  const score=(gained>0?gained*100:0)+search(next,depth-1);
+  if(score>best)best=score;
+ }
+ return changed?best:evaluate(position);
+}
+document.getElementById("bestBtn").addEventListener("click",()=>{
+ const dirs=["left","up","right","down"];
+ let best=null,bestScore=-Infinity;
+ for(const dir of dirs){
+  const next=calculate(dir,board);
+  if(next.every((v,i)=>v===board[i]))continue;
+  const gained=board.filter(Boolean).length-next.filter(Boolean).length;
+  const score=(gained>0?gained*1000:0)+search(next,3);
+  if(score>bestScore){bestScore=score;best=dir}
+ }
+ suggested=best;
+ render();
+ if(!best){say("مفيش حركة تغيّر اللوحة. راجع أماكن الحيوانات.");return}
+ const labels={left:"⬅️ شمال",up:"⬆️ أعلى",right:"➡️ يمين",down:"⬇️ أسفل"};
+ const merges=board.filter(Boolean).length-calculate(best,board).filter(Boolean).length;
+ say("🧠 أفضل حركة مقترحة: "+labels[best]+(merges>0?" — فيها دمج مباشر!":" — حسب تحليل فرص الدمج والمساحات."));
+});
+
+function setMode(value,message){
+ mode=value;
+ selected=-1;
+ closePicker();
+ closeModal();
+ updateModeButtons();
+ render();
+ say(message);
+}
+function updateModeButtons(){
+ document.getElementById("addBtn").classList.toggle("active",mode==="add");
+ document.getElementById("swapBtn").classList.toggle("active",mode==="swap");
+ document.getElementById("upgradeBtn").classList.toggle("active",mode==="upgrade");
+ document.getElementById("deleteBtn").classList.toggle("active",mode==="delete");
+}
+document.getElementById("addBtn").addEventListener("click",()=>{
+ setMode(mode==="add"?"":"add","اضغط على خانة فاضية لإضافة حيوان.");
+});
+document.getElementById("swapBtn").addEventListener("click",()=>{
+ setMode(mode==="swap"?"":"swap","اختار الحيوان الأول ثم الحيوان الثاني لتبديل مكانيهما.");
+});
+document.getElementById("upgradeBtn").addEventListener("click",()=>{
+ setMode(mode==="upgrade"?"":"upgrade","اضغط على حيوان لرفعه مستوى واحد.");
+});
+document.getElementById("deleteBtn").addEventListener("click",()=>{
+ setMode(mode==="delete"?"":"delete","اضغط على الحيوان اللي عايز تحذفه.");
+});
+function handleModeClick(i){
+ if(mode==="add"){
+  if(board[i]){say("الخانة دي فيها حيوان؛ اختار خانة فاضية.");return}
+  pickerIndex=i;openPicker(i);return;
+ }
+ if(!board[i]){say("اختار خانة فيها حيوان.");return}
+ if(mode==="delete"){
+  snap();board[i]=0;selected=-1;mode="";updateModeButtons();render();
+  say("تم حذف الحيوان.");return;
  }
  if(mode==="upgrade"){
-  if(!board[i]){say("اختار خانة فيها حيوان.");return;}
-  if(board[i]>=MAX_LEVEL){say("الحيوان وصل لأعلى مستوى.");return;}
-  snapshot();board[i]++;mode="";highlighted=[];updateButtons();render();
-  say("تم رفع الحيوان للمستوى التالي. ده تعديل يدوي للوحة.");
-  return;
+  snap();board[i]=Math.min(ANIMALS.length,board[i]+1);selected=i;
+  mode="";updateModeButtons();render();say("تم رفع مستوى الحيوان.");return;
  }
- if(mode==="delete"){
-  if(!board[i]){say("الخانة فاضية.");return;}
-  const name=animalName(board[i]);
-  if(!confirm("هل تريد حذف "+name+"؟"))return;
-  snapshot();board[i]=0;mode="";highlighted=[];
-  updateButtons();render();say("تم حذف "+name+".");return;
- }
- if(board[i]){
-  highlighted=[i];render();
-  say("الحيوان: "+animalName(board[i])+" • المستوى "+board[i]+".");
- }else{
-  openPicker(i);
+ if(mode==="swap"){
+  if(selected<0){selected=i;render();say("تمام، اختار الحيوان الثاني.");return}
+  if(selected===i){selected=-1;render();say("تم إلغاء التبديل.");return}
+  snap();
+  const temp=board[selected];board[selected]=board[i];board[i]=temp;
+  selected=-1;mode="";updateModeButtons();render();say("تم تبديل مكاني الحيوانين.");return;
  }
 }
-
-$("best").addEventListener("click",()=>{
- const res=bestMove();
- clearRecommendation();highlighted=[];
- if(!res){say("مفيش حركة متاحة تغيّر اللوحة حاليًا.");render();return;}
- recommendedDirection=res.dir;
- const button=document.querySelector('[data-move="'+res.dir+'"]');
- if(button)button.classList.add("recommended");
- say("⭐ أفضل حركة حسب التحليل: "+directionName(res.dir)+
-  ". السهم المقترح منوّر قدامك. الدمجات المتوقعة: "+res.merges+
-  " • النقاط المتوقعة: "+res.gained+
-  ". اضغط على السهم المضيء لتنفيذ الحركة. التوصية تقديرية.");
+document.getElementById("cancelBtn").addEventListener("click",()=>{
+ mode="";selected=-1;closePicker();closeModal();suggested=null;
+ updateModeButtons();render();say("تم إلغاء الاختيار.");
 });
-$("undo").addEventListener("click",undo);
-$("add").addEventListener("click",()=>openPicker(null));
-$("swap").addEventListener("click",()=>{
- clearRecommendation();mode="swap";firstSwap=-1;highlighted=[];
- closePicker();updateButtons();render();
- say("التبديل اليدوي الذكي: اختار حيوانين لتبديل مكانيهما.");
+document.getElementById("clearBtn").addEventListener("click",()=>{
+ if(!confirm("متأكد إنك عايز تمسح كل الحيوانات من اللوحة؟"))return;
+ snap();board=Array(16).fill(0);selected=-1;suggested=null;mode="";
+ closePicker();closeModal();updateModeButtons();render();
+ say("اللوحة اتفضّت. أضف الحيوانات يدويًا.");
 });
-$("upgrade").addEventListener("click",()=>{
- clearRecommendation();mode="upgrade";highlighted=[];
- closePicker();updateButtons();render();
- say("اختار الحيوان اللي عايز ترفعه مستوى واحد.");
-});
-$("delete").addEventListener("click",()=>{
- clearRecommendation();
- if(!board.some(Boolean)){say("اللوحة فاضية.");return;}
- let worst=-1,worstValue=Infinity;
- board.forEach((v,i)=>{
-  if(!v)return;
-  const r=Math.floor(i/4),c=i%4;let neighbors=0;
-  for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){
-   const rr=r+dr,cc=c+dc;
-   if(rr>=0&&rr<4&&cc>=0&&cc<4&&board[rr*4+cc]===v)neighbors++;
-  }
-  const value=v*20+neighbors*100;
-  if(value<worstValue){worstValue=value;worst=i;}
- });
- mode="delete";highlighted=[worst];updateButtons();render();
- say("اقتراح الحذف: "+animalName(board[worst])+
-  ". الحيوان المحدد هو المرشح للحذف؛ اضغط عليه للتأكيد.");
-});
-$("clear").addEventListener("click",()=>{
- if(!confirm("هل تريد مسح اللوحة كلها؟"))return;
- snapshot();board=Array(16).fill(0);score=0;
- mode="";selectedAnimal=0;highlighted=[];firstSwap=-1;
- updateButtons();clearRecommendation();render();say("تم مسح اللوحة.");
-});
-$("cancel").addEventListener("click",cancelMode);
-$("closeModal").addEventListener("click",()=>{
- closePicker();
- if(pendingCell!==null){mode="";pendingCell=null;selectedAnimal=0;updateButtons();}
-});
-$("modalBackdrop").addEventListener("click",e=>{
- if(e.target===$("modalBackdrop")){
-  closePicker();
-  if(pendingCell!==null){mode="";pendingCell=null;selectedAnimal=0;updateButtons();}
- }
-});
-document.querySelectorAll("[data-move]").forEach(btn=>{
- btn.addEventListener("click",()=>move(btn.dataset.move));
-});
-document.addEventListener("keydown",e=>{
- if(!$("modalBackdrop").classList.contains("hidden")&&e.key==="Escape"){
-  closePicker();mode="";pendingCell=null;selectedAnimal=0;updateButtons();return;
- }
- const keys={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"};
- if(keys[e.key]&&!["INPUT","TEXTAREA"].includes(document.activeElement.tagName)&&
-    $("modalBackdrop").classList.contains("hidden")){
-  e.preventDefault();move(keys[e.key]);
- }
+document.getElementById("undoBtn").addEventListener("click",()=>{
+ if(!history.length){say("مفيش خطوة سابقة للتراجع عنها.");return}
+ board=history.pop();selected=-1;suggested=null;mode="";
+ closePicker();closeModal();updateModeButtons();render();
+ say("تم التراجع عن آخر تعديل.");
 });
 
-load();render();
+buildPicker();
+load();
+render();
 </script>
 </body>
 </html>
