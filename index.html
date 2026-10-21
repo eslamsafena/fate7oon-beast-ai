@@ -57,10 +57,11 @@ h1{margin:7px 0;color:#fff0bf;font-size:clamp(26px,7vw,38px)}
 }
 .cell.empty:after{content:"+";font-size:25px;color:#a5c4e9a8}
 .cell.selected{outline:3px solid #fff3a4;box-shadow:0 0 17px #ffe987}
+
+/* صور الحيوانات بألوانها الأصلية */
 .animal-img{
   width:78%;height:72%;object-fit:contain;
-  filter:grayscale(1) brightness(0) drop-shadow(0 0 5px var(--tile,#d6efff))
-    drop-shadow(0 0 10px var(--tile,#d6efff));
+  filter:none;
 }
 .lvl{font-size:10px;font-weight:800;color:white;text-shadow:0 1px 4px #000}
 .hint,.note{color:#bdcbed;font-size:12px;line-height:1.8}
@@ -117,9 +118,10 @@ h1{margin:7px 0;color:#fff0bf;font-size:clamp(26px,7vw,38px)}
   background:radial-gradient(circle at 32% 20%,#ffffff44,#182344 74%);
   border:1px solid #ffffff65;display:flex;align-items:center;justify-content:center;
 }
+/* صور الحيوانات الملونة في قائمة الاختيار */
 .animal-choice img{
   width:90%;height:90%;object-fit:contain;
-  filter:grayscale(1) brightness(0) drop-shadow(0 0 5px var(--tile));
+  filter:none;
 }
 .modal-backdrop{
   position:fixed;inset:0;z-index:2000;background:#050817cc;
@@ -131,9 +133,10 @@ h1{margin:7px 0;color:#fff0bf;font-size:clamp(26px,7vw,38px)}
   background:linear-gradient(145deg,#293a68,#151d3b);
   border:2px solid #ffe29a;box-shadow:0 12px 40px #0009;
 }
+/* صورة الحيوان الملونة في نافذة الحذف */
 .modal img{
   width:95px;height:95px;object-fit:contain;
-  filter:grayscale(1) brightness(0) drop-shadow(0 0 8px var(--tile));
+  filter:none;
 }
 .modal h3{margin:8px 0;color:#ffe29a}
 .modal p{font-size:13px;color:#d7e2ff}
